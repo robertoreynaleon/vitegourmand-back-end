@@ -1,0 +1,11 @@
+# .htaccess for Symfony (public/)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # If the requested filename exists, serve it directly
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Otherwise, forward to index.php
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
