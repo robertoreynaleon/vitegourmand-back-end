@@ -7,43 +7,57 @@ use App\Repository\MenuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 #[ORM\Table(name: 'menus')]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['menu:read']],
+    denormalizationContext: ['groups' => ['menu:write']]
+)]
 class Menu
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['menu:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100, unique: true)]
+    #[Groups(['menu:read', 'menu:write'])]
     private ?string $title = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['menu:read', 'menu:write'])]
     private ?string $description = null;
 
     #[ORM\ManyToOne(targetEntity: Regime::class, inversedBy: 'menus')]
     #[ORM\JoinColumn(name: 'regime_id', nullable: false)]
+    #[Groups(['menu:read', 'menu:write'])]
     private ?Regime $regime = null;
 
     #[ORM\Column(type: 'decimal', precision: 6, scale: 2)]
+    #[Groups(['menu:read', 'menu:write'])]
     private ?string $pricePerPerson = null;
 
     #[ORM\Column]
+    #[Groups(['menu:read', 'menu:write'])]
     private int $minPeople = 6;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['menu:read', 'menu:write'])]
     private ?int $remainingQuantity = 0;
 
     #[ORM\Column]
+    #[Groups(['menu:read', 'menu:write'])]
     private int $advanceOrderDays = 2;
 
     #[ORM\OneToMany(targetEntity: MenuImage::class, mappedBy: 'menu', cascade: ['persist', 'remove'])]
+    #[Groups(['menu:read'])]
     private Collection $images;
 
     #[ORM\OneToMany(targetEntity: MenuDish::class, mappedBy: 'menu', cascade: ['persist', 'remove'])]
+    #[Groups(['menu:read'])]
     private Collection $menuDishes;
 
     #[ORM\OneToMany(targetEntity: OrderMenu::class, mappedBy: 'menu')]

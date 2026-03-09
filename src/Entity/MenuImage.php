@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MenuImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: MenuImageRepository::class)]
 #[ORM\Table(name: 'menu_images')]
@@ -14,16 +15,20 @@ class MenuImage
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['menu:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'images')]
     #[ORM\JoinColumn(name: 'menu_id', nullable: false, onDelete: 'CASCADE')]
+    // Pas de Groups ici pour éviter la référence circulaire
     private ?Menu $menu = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['menu:read'])]
     private ?string $imagePath = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['menu:read'])]
     private ?string $altText = null;
 
     public function getId(): ?int

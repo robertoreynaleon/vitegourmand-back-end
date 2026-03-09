@@ -4,7 +4,7 @@ namespace App\Enum;
 
 enum DishType: string
 {
-    case Starter    = 'starter';
-    case MainCourse = 'main_course';
-    case Dessert    = 'dessert';
+    case Starter    = "entrée";
+    case MainCourse = "plat_principal";
+    case Dessert    = "dessert";
 }

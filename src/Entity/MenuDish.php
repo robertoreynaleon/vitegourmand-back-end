@@ -5,12 +5,8 @@ namespace App\Entity;
 use App\Enum\DishType;
 use App\Repository\MenuDishRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-/**
- * Join entity for the `menu_dishes` table.
- * The composite primary key is (menu_id, dish_id).
- * The extra `dish_type` column prevents using a simple ManyToMany.
- */
 #[ORM\Entity(repositoryClass: MenuDishRepository::class)]
 #[ORM\Table(name: 'menu_dishes')]
 class MenuDish
@@ -18,14 +14,17 @@ class MenuDish
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Menu::class, inversedBy: 'menuDishes')]
     #[ORM\JoinColumn(name: 'menu_id', nullable: false)]
+    // Pas de Groups ici pour éviter la référence circulaire
     private Menu $menu;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Dish::class, inversedBy: 'menuDishes')]
     #[ORM\JoinColumn(name: 'dish_id', nullable: false)]
+    #[Groups(['menu:read'])]
     private Dish $dish;
 
     #[ORM\Column(type: 'string', enumType: DishType::class)]
+    #[Groups(['menu:read'])]
     private DishType $dishType;
 
     public function getMenu(): Menu
