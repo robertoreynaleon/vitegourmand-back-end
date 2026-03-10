@@ -20,11 +20,11 @@ class Menu
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['menu:read'])]
+    #[Groups(['menu:read', 'menu_dish:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100, unique: true)]
-    #[Groups(['menu:read', 'menu:write'])]
+    #[Groups(['menu:read', 'menu:write', 'menu_dish:read'])]
     private ?string $title = null;
 
     #[ORM\Column(type: 'text', nullable: true)]

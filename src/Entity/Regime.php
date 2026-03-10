@@ -7,21 +7,28 @@ use App\Repository\RegimeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: RegimeRepository::class)]
 #[ORM\Table(name: 'regimes')]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['regime:read']],
+    denormalizationContext: ['groups' => ['regime:write']]
+)]
 class Regime
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['regime:read', 'menu:read', 'menu_dish:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50, unique: true)]
+    #[Groups(['regime:read', 'menu:read', 'menu_dish:read', 'regime:write'])]
     private ?string $label = null;
 
     #[ORM\OneToMany(targetEntity: Menu::class, mappedBy: 'regime')]
+    // Pas de Groups ici pour éviter la référence circulaire Menu → Regime → Menu
     private Collection $menus;
 
     public function __construct()

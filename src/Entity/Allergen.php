@@ -7,21 +7,28 @@ use App\Repository\AllergenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: AllergenRepository::class)]
 #[ORM\Table(name: 'allergens')]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['allergen:read']],
+    denormalizationContext: ['groups' => ['allergen:write']]
+)]
 class Allergen
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['allergen:read', 'dish:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100, unique: true)]
+    #[Groups(['allergen:read', 'dish:read', 'allergen:write'])]
     private ?string $label = null;
 
     #[ORM\ManyToMany(targetEntity: Dish::class, mappedBy: 'allergens')]
+    // Pas de Groups ici pour éviter la boucle Allergen → $dishes → Dish → $allergens → Allergen
     private Collection $dishes;
 
     public function __construct()

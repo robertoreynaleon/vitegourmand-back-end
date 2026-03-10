@@ -20,16 +20,12 @@ class Dish
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['dish:read', 'menu:read'])]
+    #[Groups(['dish:read', 'menu:read', 'menu_dish:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100, unique: true)]
-    #[Groups(['dish:read', 'menu:read', 'dish:write'])]
+    #[Groups(['dish:read', 'menu:read', 'dish:write', 'menu_dish:read'])]
     private ?string $title = null;
-
-    #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(['dish:read', 'dish:write'])]
-    private ?string $photos = null;
 
     #[ORM\ManyToMany(targetEntity: Allergen::class, inversedBy: 'dishes')]
     #[ORM\JoinTable(
@@ -63,18 +59,6 @@ class Dish
     public function setTitle(string $title): static
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getPhotos(): ?string
-    {
-        return $this->photos;
-    }
-
-    public function setPhotos(?string $photos): static
-    {
-        $this->photos = $photos;
 
         return $this;
     }
