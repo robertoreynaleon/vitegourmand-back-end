@@ -5,3 +5,7 @@ api_platform:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+    eager_loading:
+        enabled: true
+        fetch_partial: false
+        max_joins: 100
