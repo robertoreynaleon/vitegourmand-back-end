@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use App\Repository\MenuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,6 +18,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
     normalizationContext: ['groups' => ['menu:read']],
     denormalizationContext: ['groups' => ['menu:write']]
 )]
+#[ApiFilter(SearchFilter::class, properties: ['regime.id' => 'exact'])]
+#[ApiFilter(RangeFilter::class, properties: ['pricePerPerson', 'minPeople'])]
 class Menu
 {
     #[ORM\Id]
