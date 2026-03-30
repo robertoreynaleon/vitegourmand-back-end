@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,40 @@ use Psr\Log\LoggerInterface;
 
 class AuthController extends AbstractController
 {
+    #[Route('/auth/login', name: 'auth_login', methods: ['POST'])]
+    public function login(
+        Request $request,
+        UserRepository $userRepository,
+        UserPasswordHasherInterface $passwordHasher,
+        JWTTokenManagerInterface $jwtManager
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+        $email = trim((string) ($data['email'] ?? ''));
+        $password = (string) ($data['password'] ?? '');
+
+        if ($email === '' || $password === '') {
+            return new JsonResponse(['code' => 400, 'message' => 'Email et mot de passe requis.'], 400);
+        }
+
+        $user = $userRepository->findOneBy(['email' => $email]);
+
+        if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
+            return new JsonResponse(['code' => 401, 'message' => 'Invalid credentials.'], 401);
+        }
+
+        $token = $jwtManager->create($user);
+
+        return new JsonResponse([
+            'token' => $token,
+            'user'  => [
+                'email'    => $user->getEmail(),
+                'name'     => $user->getName(),
+                'lastname' => $user->getLastname(),
+                'roles'    => $user->getRoles(),
+            ],
+        ]);
+    }
+
     #[Route('/auth/register/', name: 'auth_register', methods: ['POST'])]
     public function register(
         Request $request,
