@@ -1,0 +1,21 @@
+{% extends 'emails/layout.html.twig' %}
+
+{% block subject %}Bienvenue chez Vite & Gourmand !{% endblock %}
+
+{% block content %}
+    <h2>Bienvenue, {{ user.name }} !</h2>
+
+    <p>Nous sommes ravis de vous accueillir dans la famille <strong>Vite &amp; Gourmand</strong>.</p>
+
+    <p>Votre compte a bien été créé avec l'adresse e-mail <strong>{{ user.email }}</strong>. Vous pouvez dès maintenant découvrir nos menus et passer vos premières commandes.</p>
+
+    <div class="highlight-box">
+        <p>🍽️ Des plats frais, faits maison, savourez chaque instant avec nous.</p>
+    </div>
+
+    <p>
+        <a href="http://localhost:3000" class="btn">Découvrir nos menus</a>
+    </p>
+
+    <p>À très bientôt,<br><strong>L'équipe Vite &amp; Gourmand</strong></p>
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
+use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,7 +61,8 @@ class AuthController extends AbstractController
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher,
         LoggerInterface $logger,
-        CsrfTokenManagerInterface $csrfTokenManager
+        CsrfTokenManagerInterface $csrfTokenManager,
+        MailService $mailService
     ): JsonResponse {
         // Use $_POST as requested, but fall back to Request for safety.
         $post = $_POST ?: $request->request->all();
@@ -163,6 +165,13 @@ class AuthController extends AbstractController
         } catch (\Throwable $e) {
             $logger->error('Registration failed.', ['error' => $e->getMessage()]);
             return new JsonResponse(['success' => false, 'message' => 'Erreur interne.'], 500);
+        }
+
+        try {
+            $mailService->sendWelcome($user);
+        } catch (\Throwable $e) {
+            $logger->error('Welcome email failed.', ['error' => $e->getMessage()]);
+            // Non-blocking: registration succeeds even if email fails
         }
 
         return new JsonResponse([

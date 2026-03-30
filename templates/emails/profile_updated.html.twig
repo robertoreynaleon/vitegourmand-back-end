@@ -1,0 +1,21 @@
+{% extends 'emails/layout.html.twig' %}
+
+{% block subject %}Vos informations ont été mises à jour{% endblock %}
+
+{% block content %}
+    <h2>Mise à jour de votre profil</h2>
+
+    <p>Bonjour {{ user.name }},</p>
+
+    <p>Les informations de votre compte <strong>{{ user.email }}</strong> ont bien été mises à jour.</p>
+
+    <div class="highlight-box">
+        <p>Si vous n'avez pas effectué cette modification, veuillez nous contacter sans délai.</p>
+    </div>
+
+    <p>
+        <a href="http://localhost:3000/mon-compte" class="btn">Voir mon profil</a>
+    </p>
+
+    <p>Cordialement,<br><strong>L'équipe Vite &amp; Gourmand</strong></p>
+{% endblock %}

@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Service;
+
+use App\Entity\User;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+
+class MailService
+{
+    private const FROM_EMAIL = 'noreply@vitegourmand.fr';
+    private const FROM_NAME  = 'Vite & Gourmand';
+
+    public function __construct(private readonly MailerInterface $mailer) {}
+
+    public function sendWelcome(User $user): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to(new Address($user->getEmail(), $user->getName() . ' ' . $user->getLastname()))
+            ->subject('Bienvenue chez Vite & Gourmand !')
+            ->htmlTemplate('emails/welcome.html.twig')
+            ->context(['user' => $user]);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendPasswordChanged(User $user): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to(new Address($user->getEmail(), $user->getName() . ' ' . $user->getLastname()))
+            ->subject('Votre mot de passe a été modifié')
+            ->htmlTemplate('emails/password_changed.html.twig')
+            ->context(['user' => $user]);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendProfileUpdated(User $user): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to(new Address($user->getEmail(), $user->getName() . ' ' . $user->getLastname()))
+            ->subject('Vos informations ont été mises à jour')
+            ->htmlTemplate('emails/profile_updated.html.twig')
+            ->context(['user' => $user]);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendOrderConfirmation(User $user, object $order): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to(new Address($user->getEmail(), $user->getName() . ' ' . $user->getLastname()))
+            ->subject('Confirmation de votre commande #' . $order->getId())
+            ->htmlTemplate('emails/order_confirmation.html.twig')
+            ->context(['user' => $user, 'order' => $order]);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendOrderStatusUpdate(User $user, object $order): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to(new Address($user->getEmail(), $user->getName() . ' ' . $user->getLastname()))
+            ->subject('Mise à jour de votre commande #' . $order->getId())
+            ->htmlTemplate('emails/order_status.html.twig')
+            ->context(['user' => $user, 'order' => $order]);
+
+        $this->mailer->send($email);
+    }
+}

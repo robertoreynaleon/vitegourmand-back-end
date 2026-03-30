@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block subject %}Vite & Gourmand{% endblock %}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background-color: #f5f5f0;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .wrapper {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .header {
+            background-color: #2d5016;
+            padding: 32px 40px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #c9a961;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .header p {
+            color: rgba(255,255,255,0.75);
+            font-size: 13px;
+            margin-top: 4px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .divider {
+            height: 4px;
+            background: linear-gradient(90deg, #2d5016 0%, #c9a961 50%, #2d5016 100%);
+        }
+        .content {
+            padding: 40px;
+        }
+        .content h2 {
+            color: #2d5016;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        .content p {
+            color: #555555;
+            font-size: 15px;
+            margin-bottom: 14px;
+        }
+        .btn {
+            display: inline-block;
+            margin: 24px 0;
+            padding: 14px 32px;
+            background-color: #2d5016;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+        .highlight-box {
+            background-color: #f9f6ee;
+            border-left: 4px solid #c9a961;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight-box p {
+            margin-bottom: 0;
+        }
+        .footer {
+            background-color: #f5f5f0;
+            padding: 24px 40px;
+            text-align: center;
+            border-top: 1px solid #e8e8e0;
+        }
+        .footer p {
+            color: #888888;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+        .footer a {
+            color: #2d5016;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>Vite &amp; Gourmand</h1>
+            <p>Restaurant &amp; Traiteur</p>
+        </div>
+        <div class="divider"></div>
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="footer">
+            <p>© {{ "now"|date("Y") }} Vite &amp; Gourmand — Tous droits réservés</p>
+            <p>Si vous n'êtes pas à l'origine de cette action, ignorez cet email.</p>
+        </div>
+    </div>
+</body>
+</html>

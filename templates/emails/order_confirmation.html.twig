@@ -1,0 +1,24 @@
+{% extends 'emails/layout.html.twig' %}
+
+{% block subject %}Confirmation de votre commande #{{ order.id }}{% endblock %}
+
+{% block content %}
+    <h2>Commande confirmée ✓</h2>
+
+    <p>Bonjour {{ user.name }},</p>
+
+    <p>Nous avons bien reçu votre commande <strong>#{{ order.id }}</strong>. Notre équipe se met au travail !</p>
+
+    <div class="highlight-box">
+        <p><strong>Récapitulatif</strong><br>
+        Commande n° {{ order.id }}<br>
+        Date : {{ order.createdAt is defined ? order.createdAt|date('d/m/Y à H:i') : 'N/A' }}<br>
+        Statut : {{ order.status is defined ? order.status : 'En préparation' }}</p>
+    </div>
+
+    <p>
+        <a href="http://localhost:3000/mes-commandes" class="btn">Suivre ma commande</a>
+    </p>
+
+    <p>Merci pour votre confiance,<br><strong>L'équipe Vite &amp; Gourmand</strong></p>
+{% endblock %}
