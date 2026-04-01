@@ -28,8 +28,7 @@ security:
         - { path: ^/api/menus, roles: PUBLIC_ACCESS }
         - { path: ^/api/dishes, roles: PUBLIC_ACCESS }
         - { path: ^/api/mongo, roles: PUBLIC_ACCESS }
-        # - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
-        # - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/user, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
