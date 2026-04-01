@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
 use App\Service\MailService;
+use App\Service\MongoDBService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -141,5 +143,43 @@ class UserController extends AbstractController
                 'roles'      => $currentUser->getRoles(),
             ],
         ]);
+    }
+
+    #[Route('/me', name: 'api_user_delete', methods: ['DELETE'])]
+    public function delete(
+        EntityManagerInterface $entityManager,
+        OrderRepository $orderRepository,
+        MongoDBService $mongo,
+        LoggerInterface $logger
+    ): JsonResponse {
+        /** @var User|null $currentUser */
+        $currentUser = $this->getUser();
+
+        if (!$currentUser) {
+            return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+
+        $userId = $currentUser->getId();
+
+        try {
+            // 1. Supprimer les reviews MongoDB (cascade via user_id)
+            $mongo->deleteByField('reviews', 'user_id', $userId);
+
+            // 2. Supprimer les commandes MySQL (OrderMenu supprimés en cascade via l'entité Order)
+            $orders = $orderRepository->findBy(['user' => $currentUser]);
+            foreach ($orders as $order) {
+                $entityManager->remove($order);
+            }
+
+            // 3. Supprimer l'utilisateur
+            $entityManager->remove($currentUser);
+            $entityManager->flush();
+
+        } catch (\Throwable $e) {
+            $logger->error('Account deletion failed.', ['user_id' => $userId, 'error' => $e->getMessage()]);
+            return new JsonResponse(['success' => false, 'message' => 'Erreur lors de la suppression du compte.'], 500);
+        }
+
+        return new JsonResponse(['success' => true], 200);
     }
 }

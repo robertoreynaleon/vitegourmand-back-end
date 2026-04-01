@@ -34,4 +34,19 @@ class MongoDBService
 
         return $results;
     }
+
+    public function deleteByField(string $collection, string $field, mixed $value): int
+    {
+        $allowed = ['reviews', 'menu_stats', 'order_status_history'];
+        if (!in_array($collection, $allowed, true)) {
+            return 0;
+        }
+
+        $result = $this->client
+            ->selectDatabase($this->dbName)
+            ->selectCollection($collection)
+            ->deleteMany([$field => $value]);
+
+        return $result->getDeletedCount();
+    }
 }
