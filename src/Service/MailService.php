@@ -73,4 +73,28 @@ class MailService
 
         $this->mailer->send($email);
     }
+
+    public function sendOrderModified(User $user, object $order): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to(new Address($user->getEmail(), $user->getName() . ' ' . $user->getLastname()))
+            ->subject('Votre commande #' . $order->getId() . ' a été modifiée')
+            ->htmlTemplate('emails/order_modified.html.twig')
+            ->context(['user' => $user, 'order' => $order]);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendOrderCancelled(User $user, int $orderId, string $orderDate): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to(new Address($user->getEmail(), $user->getName() . ' ' . $user->getLastname()))
+            ->subject('Votre commande #' . $orderId . ' a été annulée')
+            ->htmlTemplate('emails/order_cancelled.html.twig')
+            ->context(['user' => $user, 'orderId' => $orderId, 'orderDate' => $orderDate]);
+
+        $this->mailer->send($email);
+    }
 }
