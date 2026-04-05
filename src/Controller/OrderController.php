@@ -6,6 +6,7 @@ use App\Entity\Order;
 use App\Entity\OrderMenu;
 use App\Enum\OrderStatus;
 use App\Repository\MenuRepository;
+use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,6 +29,7 @@ class OrderController extends AbstractController
         Request $request,
         MenuRepository $menuRepository,
         EntityManagerInterface $entityManager,
+        MailService $mailService,
         LoggerInterface $logger
     ): JsonResponse {
         $user = $this->getUser();
@@ -116,6 +118,12 @@ class OrderController extends AbstractController
         } catch (\Throwable $e) {
             $logger->error('Échec de l\'enregistrement de la commande.', ['error' => $e->getMessage()]);
             return new JsonResponse(['success' => false, 'message' => 'Erreur lors de l\'enregistrement de la commande.'], 500);
+        }
+
+        try {
+            $mailService->sendOrderConfirmation($user, $order);
+        } catch (\Throwable $e) {
+            $logger->error('Échec de l\'envoi du mail de confirmation.', ['error' => $e->getMessage()]);
         }
 
         return new JsonResponse([

@@ -12,12 +12,15 @@
     <div class="highlight-box">
         <p><strong>Récapitulatif</strong><br>
         Commande n° {{ order.id }}<br>
-        Date : {{ order.createdAt is defined ? order.createdAt|date('d/m/Y à H:i') : 'N/A' }}<br>
-        Statut : {{ order.status is defined ? order.status : 'En préparation' }}</p>
+        Date : {{ order.orderDate ? order.orderDate|date('d/m/Y à H:i') : 'N/A' }}<br>
+        Livraison : {{ order.deliveryDate ? order.deliveryDate|date('d/m/Y') : 'N/A' }} à {{ order.deliveryTime ? order.deliveryTime|date('H:i') : 'N/A' }}<br>
+        Adresse : {{ order.deliveryAddress }}<br>
+        Montant total : {{ order.totalAmount|number_format(2, ',', ' ') }} €<br>
+        Statut : {{ order.status.value }}</p>
     </div>
 
     <p>
-        <a href="http://localhost:3000/mes-commandes" class="btn">Suivre ma commande</a>
+        <a href="http://localhost:3000/user/orders" class="btn">Suivre ma commande</a>
     </p>
 
     <p>Merci pour votre confiance,<br><strong>L'équipe Vite &amp; Gourmand</strong></p>
