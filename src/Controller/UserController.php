@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
 use App\Entity\User;
 use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
@@ -181,5 +182,40 @@ class UserController extends AbstractController
         }
 
         return new JsonResponse(['success' => true], 200);
+    }
+
+    /**
+     * GET /api/user/orders
+     *
+     * Retourne toutes les commandes de l'utilisateur connecté, triées par date décroissante.
+     */
+    #[Route('/orders', name: 'api_user_orders', methods: ['GET'])]
+    public function orders(OrderRepository $orderRepository): JsonResponse
+    {
+        /** @var \App\Entity\User|null $user */
+        $user = $this->getUser();
+
+        if (!$user) {
+            return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+
+        $orders = $orderRepository->findBy(
+            ['user' => $user],
+            ['orderDate' => 'DESC']
+        );
+
+        $data = array_map(function (Order $order) {
+            return [
+                'id'              => $order->getId(),
+                'orderDate'       => $order->getOrderDate()?->format('d/m/Y \à H:i'),
+                'deliveryDate'    => $order->getDeliveryDate()?->format('d/m/Y'),
+                'deliveryTime'    => $order->getDeliveryTime()?->format('H:i'),
+                'deliveryAddress' => $order->getDeliveryAddress(),
+                'status'          => $order->getStatus()->value,
+                'totalAmount'     => $order->getTotalAmount(),
+            ];
+        }, $orders);
+
+        return new JsonResponse($data);
     }
 }
