@@ -29,9 +29,10 @@ security:
         - { path: ^/api/dishes, roles: PUBLIC_ACCESS }
         - { path: ^/api/mongo, roles: PUBLIC_ACCESS }
         - { path: ^/api/cart, roles: PUBLIC_ACCESS }
-        - { path: ^/api/orders, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/order_menus, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/user, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/orders/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/order_menus/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/staff/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/user/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
