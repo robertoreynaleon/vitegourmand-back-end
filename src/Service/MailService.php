@@ -97,4 +97,37 @@ class MailService
 
         $this->mailer->send($email);
     }
+
+    public function sendOrderStaffUpdate(User $user, object $order, string $staffMessage, bool $equipmentLoan): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to(new Address($user->getEmail(), $user->getName() . ' ' . $user->getLastname()))
+            ->subject('Mise à jour de votre commande #' . $order->getId())
+            ->htmlTemplate('emails/order_staff_update.html.twig')
+            ->context([
+                'user'          => $user,
+                'order'         => $order,
+                'staffMessage'  => $staffMessage,
+                'equipmentLoan' => $equipmentLoan,
+            ]);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendOrderRefused(User $user, object $order, string $staffMessage): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to(new Address($user->getEmail(), $user->getName() . ' ' . $user->getLastname()))
+            ->subject('Votre commande #' . $order->getId() . ' a été refusée')
+            ->htmlTemplate('emails/order_refused.html.twig')
+            ->context([
+                'user'         => $user,
+                'order'        => $order,
+                'staffMessage' => $staffMessage,
+            ]);
+
+        $this->mailer->send($email);
+    }
 }

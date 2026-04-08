@@ -1,0 +1,42 @@
+{% extends 'emails/layout.html.twig' %}
+
+{% block subject %}Mise à jour de votre commande #{{ order.id }}{% endblock %}
+
+{% block content %}
+    <h2>Votre commande a été mise à jour ✎</h2>
+
+    <p>Bonjour {{ user.name }},</p>
+
+    <p>Votre commande <strong>#{{ order.id }}</strong> a été traitée par notre équipe.</p>
+
+    <div class="highlight-box">
+        <p><strong>Récapitulatif de la commande</strong><br>
+        Commande n° {{ order.id }}<br>
+        Livraison : {{ order.deliveryDate ? order.deliveryDate|date('d/m/Y') : 'N/A' }} à {{ order.deliveryTime ? order.deliveryTime|date('H:i') : 'N/A' }}<br>
+        Adresse : {{ order.deliveryAddress }}<br>
+        Montant total : {{ order.totalAmount|number_format(2, ',', ' ') }} €<br>
+        <strong>Nouveau statut : {{ order.status.value }}</strong></p>
+    </div>
+
+    {% if staffMessage %}
+        <div class="highlight-box">
+            <p><strong>Message de notre équipe :</strong><br>{{ staffMessage }}</p>
+        </div>
+    {% endif %}
+
+    {% if equipmentLoan %}
+        <div class="highlight-box" style="border-left-color: #c9a961;">
+            <p><strong>⚠ Prêt de matériel</strong><br>
+            Un prêt de matériel a été accordé pour cette commande.<br>
+            Conformément à nos <strong>conditions générales de vente</strong>, le matériel doit être restitué dans un délai de <strong>10 jours ouvrés</strong> suivant la livraison.<br>
+            Passé ce délai, des frais de <strong>600 € TTC</strong> vous seront facturés.<br>
+            Pour organiser la restitution, veuillez répondre à cet email ou nous contacter directement.</p>
+        </div>
+    {% endif %}
+
+    <p>
+        <a href="http://localhost:3000/user/orders/" class="btn">Suivre ma commande</a>
+    </p>
+
+    <p>Cordialement,<br><strong>L'équipe Vite &amp; Gourmand</strong></p>
+{% endblock %}

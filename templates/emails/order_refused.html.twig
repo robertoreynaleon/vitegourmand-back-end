@@ -1,0 +1,33 @@
+{% extends 'emails/layout.html.twig' %}
+
+{% block subject %}Votre commande #{{ order.id }} a été refusée{% endblock %}
+
+{% block content %}
+    <h2>Commande refusée ✗</h2>
+
+    <p>Bonjour {{ user.name }},</p>
+
+    <p>Nous avons le regret de vous informer que votre commande <strong>#{{ order.id }}</strong> n'a pas pu être acceptée.</p>
+
+    <div class="highlight-box">
+        <p><strong>Récapitulatif</strong><br>
+        Commande n° {{ order.id }}<br>
+        Date de commande : {{ order.orderDate ? order.orderDate|date('d/m/Y à H:i') : 'N/A' }}<br>
+        Montant total : {{ order.totalAmount|number_format(2, ',', ' ') }} €<br>
+        Statut : Annulée</p>
+    </div>
+
+    {% if staffMessage %}
+        <div class="highlight-box">
+            <p><strong>Motif communiqué par notre équipe :</strong><br>{{ staffMessage }}</p>
+        </div>
+    {% endif %}
+
+    <p>Si vous souhaitez plus d'informations ou passer une nouvelle commande, n'hésitez pas à nous contacter ou à consulter notre carte.</p>
+
+    <p>
+        <a href="http://localhost:3000/menu/list/" class="btn">Voir nos menus</a>
+    </p>
+
+    <p>Nous nous excusons pour la gêne occasionnée.<br><strong>L'équipe Vite &amp; Gourmand</strong></p>
+{% endblock %}
