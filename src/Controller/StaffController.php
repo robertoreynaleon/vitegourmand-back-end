@@ -5,7 +5,11 @@ namespace App\Controller;
 use App\Entity\OrderMenu;
 use App\Entity\User;
 use App\Enum\OrderStatus;
+use App\Repository\AllergenRepository;
+use App\Repository\DishRepository;
+use App\Repository\MenuRepository;
 use App\Repository\OrderRepository;
+use App\Repository\RegimeRepository;
 use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -195,5 +199,116 @@ class StaffController extends AbstractController
         }
 
         return new JsonResponse(['success' => true, 'orderId' => $order->getId()]);
+    }
+
+    // =========================================================================
+    // CATALOGUE
+    // =========================================================================
+
+    /**
+     * GET /api/staff/catalog/regimes
+     * Retourne tous les régimes (id, label).
+     */
+    #[Route('/catalog/regimes', name: 'api_staff_catalog_regimes', methods: ['GET'])]
+    public function catalogRegimes(RegimeRepository $regimeRepository): JsonResponse
+    {
+        /** @var User|null $user */
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+        $roles = $user->getRoles();
+        if (!in_array('ROLE_STAFF_MEMBER', $roles, true) && !in_array('ROLE_ADMIN', $roles, true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
+        $regimes = $regimeRepository->findBy([], ['label' => 'ASC']);
+
+        return new JsonResponse(array_map(fn($r) => [
+            'id'    => $r->getId(),
+            'label' => $r->getLabel(),
+        ], $regimes));
+    }
+
+    /**
+     * GET /api/staff/catalog/dishes
+     * Retourne tous les plats (id, title, allergenIds[]).
+     */
+    #[Route('/catalog/dishes', name: 'api_staff_catalog_dishes', methods: ['GET'])]
+    public function catalogDishes(DishRepository $dishRepository): JsonResponse
+    {
+        /** @var User|null $user */
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+        $roles = $user->getRoles();
+        if (!in_array('ROLE_STAFF_MEMBER', $roles, true) && !in_array('ROLE_ADMIN', $roles, true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
+        $dishes = $dishRepository->findBy([], ['title' => 'ASC']);
+
+        return new JsonResponse(array_map(fn($d) => [
+            'id'          => $d->getId(),
+            'title'       => $d->getTitle(),
+            'allergenIds' => array_map(fn($a) => $a->getId(), $d->getAllergens()->toArray()),
+        ], $dishes));
+    }
+
+    /**
+     * GET /api/staff/catalog/allergens
+     * Retourne tous les allergènes (id, label, dishIds[]).
+     */
+    #[Route('/catalog/allergens', name: 'api_staff_catalog_allergens', methods: ['GET'])]
+    public function catalogAllergens(AllergenRepository $allergenRepository): JsonResponse
+    {
+        /** @var User|null $user */
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+        $roles = $user->getRoles();
+        if (!in_array('ROLE_STAFF_MEMBER', $roles, true) && !in_array('ROLE_ADMIN', $roles, true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
+        $allergens = $allergenRepository->findBy([], ['label' => 'ASC']);
+
+        return new JsonResponse(array_map(fn($a) => [
+            'id'      => $a->getId(),
+            'label'   => $a->getLabel(),
+            'dishIds' => array_map(fn($d) => $d->getId(), $a->getDishes()->toArray()),
+        ], $allergens));
+    }
+
+    /**
+     * GET /api/staff/catalog/menus
+     * Retourne tous les menus (id, title, regimeId, dishIds[]).
+     */
+    #[Route('/catalog/menus', name: 'api_staff_catalog_menus', methods: ['GET'])]
+    public function catalogMenus(MenuRepository $menuRepository): JsonResponse
+    {
+        /** @var User|null $user */
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+        $roles = $user->getRoles();
+        if (!in_array('ROLE_STAFF_MEMBER', $roles, true) && !in_array('ROLE_ADMIN', $roles, true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
+        $menus = $menuRepository->findBy([], ['title' => 'ASC']);
+
+        return new JsonResponse(array_map(fn($m) => [
+            'id'       => $m->getId(),
+            'title'    => $m->getTitle(),
+            'regimeId' => $m->getRegime()?->getId(),
+            'dishIds'  => array_map(
+                fn($md) => $md->getDish()->getId(),
+                $m->getMenuDishes()->toArray()
+            ),
+        ], $menus));
     }
 }
