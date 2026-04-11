@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Menu;
+use App\Entity\MenuDish;
+use App\Entity\MenuImage;
 use App\Entity\OrderMenu;
 use App\Entity\User;
+use App\Enum\DishType;
 use App\Enum\OrderStatus;
 use App\Repository\AllergenRepository;
 use App\Repository\DishRepository;
@@ -310,5 +314,399 @@ class StaffController extends AbstractController
                 $m->getMenuDishes()->toArray()
             ),
         ], $menus));
+    }
+
+    // =========================================================================
+    // CATALOGUE — CRUD MENUS
+    // =========================================================================
+
+    /**
+     * GET /api/staff/catalog/menus/{id}
+     * Retourne le détail complet d'un menu (pour la page édition).
+     */
+    #[Route('/catalog/menus/{id}', name: 'api_staff_catalog_menu_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function catalogMenuShow(int $id, MenuRepository $menuRepository): JsonResponse
+    {
+        /** @var User|null $user */
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+        $roles = $user->getRoles();
+        if (!in_array('ROLE_STAFF_MEMBER', $roles, true) && !in_array('ROLE_ADMIN', $roles, true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
+        $menu = $menuRepository->find($id);
+        if (!$menu) {
+            return new JsonResponse(['message' => 'Menu introuvable.'], 404);
+        }
+
+        return new JsonResponse([
+            'id'                => $menu->getId(),
+            'title'             => $menu->getTitle(),
+            'description'       => $menu->getDescription(),
+            'regimeId'          => $menu->getRegime()?->getId(),
+            'pricePerPerson'    => (float) $menu->getPricePerPerson(),
+            'minPeople'         => $menu->getMinPeople(),
+            'remainingQuantity' => $menu->getRemainingQuantity(),
+            'advanceOrderDays'  => $menu->getAdvanceOrderDays(),
+            'dishes'            => array_map(fn($md) => [
+                'dishId'      => $md->getDish()->getId(),
+                'dishTitle'   => $md->getDish()->getTitle(),
+                'dishType'    => $md->getDishType()->value,
+                'allergenIds' => array_map(fn($a) => $a->getId(), $md->getDish()->getAllergens()->toArray()),
+            ], $menu->getMenuDishes()->toArray()),
+            'images'            => array_map(fn($img) => [
+                'id'        => $img->getId(),
+                'imagePath' => $img->getImagePath(),
+                'altText'   => $img->getAltText(),
+            ], $menu->getImages()->toArray()),
+        ]);
+    }
+
+    /**
+     * POST /api/staff/catalog/menus
+     * Crée un nouveau menu avec ses plats et images.
+     */
+    #[Route('/catalog/menus', name: 'api_staff_catalog_menu_create', methods: ['POST'])]
+    public function catalogMenuCreate(
+        Request $request,
+        RegimeRepository $regimeRepository,
+        DishRepository $dishRepository,
+        AllergenRepository $allergenRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        /** @var User|null $user */
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+        $roles = $user->getRoles();
+        if (!in_array('ROLE_STAFF_MEMBER', $roles, true) && !in_array('ROLE_ADMIN', $roles, true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
+        $title        = trim(strip_tags((string) $request->request->get('title', '')));
+        $description  = trim(strip_tags((string) $request->request->get('description', '')));
+        $regimeId     = (int) $request->request->get('regimeId', 0);
+        $priceRaw     = $request->request->get('pricePerPerson', '');
+        $minPeople    = (int) $request->request->get('minPeople', 6);
+        $remainingQty = (int) $request->request->get('remainingQuantity', 0);
+        $advanceDays  = (int) $request->request->get('advanceOrderDays', 2);
+        $dishesJson   = (string) $request->request->get('dishes', '[]');
+
+        if ($title === '' || mb_strlen($title) > 100) {
+            return new JsonResponse(['message' => 'Titre invalide (1–100 caractères).'], 400);
+        }
+        $regime = $regimeRepository->find($regimeId);
+        if (!$regime) {
+            return new JsonResponse(['message' => 'Régime invalide.'], 400);
+        }
+        $price = filter_var($priceRaw, FILTER_VALIDATE_FLOAT);
+        if ($price === false || $price < 0) {
+            return new JsonResponse(['message' => 'Prix par personne invalide.'], 400);
+        }
+        if ($minPeople < 1) {
+            return new JsonResponse(['message' => 'Nombre minimum de personnes invalide.'], 400);
+        }
+
+        $menu = new Menu();
+        $menu->setTitle($title);
+        $menu->setDescription($description !== '' ? $description : null);
+        $menu->setRegime($regime);
+        $menu->setPricePerPerson((string) round($price, 2));
+        $menu->setMinPeople($minPeople);
+        $menu->setRemainingQuantity($remainingQty >= 0 ? $remainingQty : 0);
+        $menu->setAdvanceOrderDays($advanceDays >= 0 ? $advanceDays : 2);
+        $entityManager->persist($menu);
+
+        $dishesData = json_decode($dishesJson, true);
+        if (is_array($dishesData)) {
+            foreach ($dishesData as $item) {
+                $dish = $dishRepository->find((int) ($item['dishId'] ?? 0));
+                if (!$dish) continue;
+                $dishType = DishType::tryFrom((string) ($item['dishType'] ?? ''));
+                if (!$dishType) continue;
+
+                $menuDish = new MenuDish();
+                $menuDish->setDish($dish);
+                $menuDish->setDishType($dishType);
+                $menuDish->setMenu($menu);
+                $entityManager->persist($menuDish);
+
+                if (isset($item['allergenIds']) && is_array($item['allergenIds'])) {
+                    foreach ($dish->getAllergens()->toArray() as $a) {
+                        $dish->removeAllergen($a);
+                    }
+                    foreach ($item['allergenIds'] as $aId) {
+                        $a = $allergenRepository->find((int) $aId);
+                        if ($a) $dish->addAllergen($a);
+                    }
+                }
+            }
+        }
+
+        $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/menus/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        $allowed = ['image/webp'];
+        $files   = $request->files->get('images', []);
+        if (!is_array($files)) $files = [$files];
+        foreach (array_slice(array_filter($files), 0, 5) as $file) {
+            if (!in_array($file->getMimeType(), $allowed, true)) continue;
+            $filename    = bin2hex(random_bytes(12)) . '.webp';
+            $destination = $uploadDir . $filename;
+            // Move to a temp path first, then compress in-place
+            $file->move($uploadDir, $filename);
+            $this->compressImage($destination, $destination, 1920, 85);
+            $img = new MenuImage();
+            $img->setImagePath('uploads/menus/' . $filename);
+            $img->setAltText($title);
+            $img->setMenu($menu);
+            $entityManager->persist($img);
+        }
+
+        try {
+            $entityManager->flush();
+        } catch (\Throwable $e) {
+            return new JsonResponse(['message' => 'Erreur lors de la création : ' . $e->getMessage()], 500);
+        }
+
+        return new JsonResponse(['id' => $menu->getId(), 'title' => $menu->getTitle()], 201);
+    }
+
+    /**
+     * POST /api/staff/catalog/menus/{id}
+     * Modifie un menu existant.
+     */
+    #[Route('/catalog/menus/{id}', name: 'api_staff_catalog_menu_edit', methods: ['POST'], requirements: ['id' => '\d+'])]
+    public function catalogMenuEdit(
+        int $id,
+        Request $request,
+        MenuRepository $menuRepository,
+        RegimeRepository $regimeRepository,
+        DishRepository $dishRepository,
+        AllergenRepository $allergenRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        /** @var User|null $user */
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+        $roles = $user->getRoles();
+        if (!in_array('ROLE_STAFF_MEMBER', $roles, true) && !in_array('ROLE_ADMIN', $roles, true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
+        $menu = $menuRepository->find($id);
+        if (!$menu) {
+            return new JsonResponse(['message' => 'Menu introuvable.'], 404);
+        }
+
+        $title          = trim(strip_tags((string) $request->request->get('title', '')));
+        $description    = trim(strip_tags((string) $request->request->get('description', '')));
+        $regimeId       = (int) $request->request->get('regimeId', 0);
+        $priceRaw       = $request->request->get('pricePerPerson', '');
+        $minPeople      = (int) $request->request->get('minPeople', 6);
+        $remainingQty   = (int) $request->request->get('remainingQuantity', 0);
+        $advanceDays    = (int) $request->request->get('advanceOrderDays', 2);
+        $dishesJson     = (string) $request->request->get('dishes', '[]');
+        $removedIdsJson = (string) $request->request->get('removedImageIds', '[]');
+
+        if ($title === '' || mb_strlen($title) > 100) {
+            return new JsonResponse(['message' => 'Titre invalide (1–100 caractères).'], 400);
+        }
+        $regime = $regimeRepository->find($regimeId);
+        if (!$regime) {
+            return new JsonResponse(['message' => 'Régime invalide.'], 400);
+        }
+        $price = filter_var($priceRaw, FILTER_VALIDATE_FLOAT);
+        if ($price === false || $price < 0) {
+            return new JsonResponse(['message' => 'Prix par personne invalide.'], 400);
+        }
+        if ($minPeople < 1) {
+            return new JsonResponse(['message' => 'Nombre minimum de personnes invalide.'], 400);
+        }
+
+        $menu->setTitle($title);
+        $menu->setDescription($description !== '' ? $description : null);
+        $menu->setRegime($regime);
+        $menu->setPricePerPerson((string) round($price, 2));
+        $menu->setMinPeople($minPeople);
+        $menu->setRemainingQuantity($remainingQty >= 0 ? $remainingQty : 0);
+        $menu->setAdvanceOrderDays($advanceDays >= 0 ? $advanceDays : 2);
+
+        // Suppression des anciens plats — flush immédiat pour éviter la violation
+        // de la contrainte unique (menu_id, dish_id) lors du re-ajout
+        foreach ($menu->getMenuDishes()->toArray() as $md) {
+            $entityManager->remove($md);
+        }
+        $entityManager->flush();
+
+        $dishesData = json_decode($dishesJson, true);
+        if (is_array($dishesData)) {
+            foreach ($dishesData as $item) {
+                $dish = $dishRepository->find((int) ($item['dishId'] ?? 0));
+                if (!$dish) continue;
+                $dishType = DishType::tryFrom((string) ($item['dishType'] ?? ''));
+                if (!$dishType) continue;
+
+                $menuDish = new MenuDish();
+                $menuDish->setDish($dish);
+                $menuDish->setDishType($dishType);
+                $menuDish->setMenu($menu);
+                $entityManager->persist($menuDish);
+
+                if (isset($item['allergenIds']) && is_array($item['allergenIds'])) {
+                    foreach ($dish->getAllergens()->toArray() as $a) {
+                        $dish->removeAllergen($a);
+                    }
+                    foreach ($item['allergenIds'] as $aId) {
+                        $a = $allergenRepository->find((int) $aId);
+                        if ($a) $dish->addAllergen($a);
+                    }
+                }
+            }
+        }
+
+        // Suppression des images demandées
+        $removedIds    = json_decode($removedIdsJson, true);
+        $removedIds    = is_array($removedIds) ? array_map('intval', $removedIds) : [];
+        $publicDir     = $this->getParameter('kernel.project_dir') . '/public/';
+        $pathsToDelete = [];
+
+        // Snapshot BEFORE any remove() — needed for correct $keptCount below
+        $allImages = $menu->getImages()->toArray();
+
+        foreach ($allImages as $img) {
+            if (in_array($img->getId(), $removedIds, true)) {
+                // Collect path — file deletion happens after successful flush
+                $pathsToDelete[] = $publicDir . ltrim($img->getImagePath(), '/');
+                $entityManager->remove($img);
+            }
+        }
+
+        // Ajout de nouvelles images (plafond à 5)
+        $keptCount = count($allImages) - count($removedIds);
+        $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/menus/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        $allowed = ['image/webp'];
+        $files   = $request->files->get('images', []);
+        if (!is_array($files)) $files = [$files];
+        foreach (array_slice(array_filter($files), 0, max(0, 5 - $keptCount)) as $file) {
+            if (!in_array($file->getMimeType(), $allowed, true)) continue;
+            $filename    = bin2hex(random_bytes(12)) . '.webp';
+            $destination = $uploadDir . $filename;
+            $file->move($uploadDir, $filename);
+            $this->compressImage($destination, $destination, 1920, 85);
+            $img = new MenuImage();
+            $img->setImagePath('uploads/menus/' . $filename);
+            $img->setAltText($title);
+            $img->setMenu($menu);
+            $entityManager->persist($img);
+        }
+
+        try {
+            $entityManager->flush();
+        } catch (\Throwable $e) {
+            return new JsonResponse(['message' => 'Erreur lors de la modification : ' . $e->getMessage()], 500);
+        }
+
+        // Suppression physique des fichiers — uniquement après flush réussi
+        foreach ($pathsToDelete as $path) {
+            if (is_file($path)) {
+                @unlink($path);
+            }
+        }
+
+        return new JsonResponse(['id' => $menu->getId(), 'title' => $menu->getTitle()]);
+    }
+
+    /**
+     * DELETE /api/staff/catalog/menus/{id}
+     * Supprime un menu existant et ses fichiers images du disque.
+     */
+    #[Route('/catalog/menus/{id}', name: 'api_staff_catalog_menu_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
+    public function catalogMenuDelete(
+        int $id,
+        MenuRepository $menuRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        /** @var User|null $user */
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+        $roles = $user->getRoles();
+        if (!in_array('ROLE_STAFF_MEMBER', $roles, true) && !in_array('ROLE_ADMIN', $roles, true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
+        $menu = $menuRepository->find($id);
+        if (!$menu) {
+            return new JsonResponse(['message' => 'Menu introuvable.'], 404);
+        }
+
+        // Suppression des fichiers images du disque
+        $publicDir = $this->getParameter('kernel.project_dir') . '/public/';
+        foreach ($menu->getImages()->toArray() as $img) {
+            $path = $publicDir . $img->getImagePath();
+            if (is_file($path)) {
+                @unlink($path);
+            }
+        }
+
+        try {
+            $entityManager->remove($menu);
+            $entityManager->flush();
+        } catch (\Throwable) {
+            return new JsonResponse(['message' => 'Erreur lors de la suppression du menu.'], 500);
+        }
+
+        return new JsonResponse(['message' => 'Menu supprimé avec succès.']);
+    }
+
+    private function compressImage(string $source, string $destination, int $maxWidth = 1920, int $quality = 85): bool
+    {
+        if (!function_exists('imagecreatefromwebp')) {
+            return false;
+        }
+        $oldLimit = ini_get('memory_limit');
+        ini_set('memory_limit', '512M');
+
+        $src = @imagecreatefromwebp($source);
+        if (!$src) {
+            ini_set('memory_limit', $oldLimit);
+            return false;
+        }
+
+        $width  = imagesx($src);
+        $height = imagesy($src);
+
+        if ($width > $maxWidth) {
+            $newWidth  = $maxWidth;
+            $newHeight = (int) round(($height / $width) * $maxWidth);
+        } else {
+            $newWidth  = $width;
+            $newHeight = $height;
+        }
+
+        $dst = imagecreatetruecolor($newWidth, $newHeight);
+        imagealphablending($dst, false);
+        imagesavealpha($dst, true);
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+        imagedestroy($src);
+
+        $ok = imagewebp($dst, $destination, $quality);
+        imagedestroy($dst);
+        gc_collect_cycles();
+        ini_set('memory_limit', $oldLimit);
+
+        return $ok;
     }
 }
