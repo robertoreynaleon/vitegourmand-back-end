@@ -31,6 +31,7 @@ security:
         - { path: ^/api/cart, roles: PUBLIC_ACCESS }
         - { path: ^/api/orders/, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/order_menus/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/reviews, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/staff/, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/user/, roles: IS_AUTHENTICATED_FULLY }
 
