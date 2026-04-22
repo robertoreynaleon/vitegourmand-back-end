@@ -1,0 +1,23 @@
+{% extends 'emails/layout.html.twig' %}
+
+{% block subject %}Bienvenue dans l'équipe Vite & Gourmand !{% endblock %}
+
+{% block content %}
+    <h2>Bienvenue, {{ user.name }} !</h2>
+
+    <p>Vous avez été ajouté(e) à l'équipe <strong>Vite &amp; Gourmand</strong> en tant qu'employé(e).</p>
+
+    <p>Votre compte a été créé avec l'adresse e-mail <strong>{{ user.email }}</strong>.</p>
+
+    <div class="highlight-box">
+        <p>🔑 Votre mot de passe ne vous est pas communiqué par mail pour des raisons de sécurité. Veuillez vous rapprocher de l'administrateur afin de l'obtenir.</p>
+    </div>
+
+    <p>Une fois que vous disposez de votre mot de passe, vous pouvez vous connecter à l'application depuis la page de connexion.</p>
+
+    <p>
+        <a href="http://localhost:3000/auth/login/" class="btn">Se connecter</a>
+    </p>
+
+    <p>À bientôt,<br><strong>L'équipe Vite &amp; Gourmand</strong></p>
+{% endblock %}

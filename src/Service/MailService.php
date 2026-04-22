@@ -115,6 +115,18 @@ class MailService
         $this->mailer->send($email);
     }
 
+    public function sendStaffWelcome(User $user): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to(new Address($user->getEmail(), $user->getName() . ' ' . $user->getLastname()))
+            ->subject('Bienvenue dans l\'équipe Vite & Gourmand !')
+            ->htmlTemplate('emails/staff_welcome.html.twig')
+            ->context(['user' => $user]);
+
+        $this->mailer->send($email);
+    }
+
     public function sendOrderRefused(User $user, object $order, string $staffMessage): void
     {
         $email = (new TemplatedEmail())
