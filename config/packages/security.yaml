@@ -33,6 +33,7 @@ security:
         - { path: ^/api/order_menus/, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/reviews, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/staff/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/admin/, roles: ROLE_ADMIN }
         - { path: ^/api/user/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
