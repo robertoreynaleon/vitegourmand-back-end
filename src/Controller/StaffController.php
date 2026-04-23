@@ -15,6 +15,7 @@ use App\Repository\MenuRepository;
 use App\Repository\OrderRepository;
 use App\Repository\RegimeRepository;
 use App\Service\MailService;
+use App\Service\MongoDBService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -133,7 +134,8 @@ class StaffController extends AbstractController
         OrderRepository $orderRepository,
         EntityManagerInterface $entityManager,
         MailService $mailService,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        MongoDBService $mongoDBService
     ): JsonResponse {
         /** @var User|null $staff */
         $staff = $this->getUser();
@@ -179,6 +181,8 @@ class StaffController extends AbstractController
             }
         }
 
+        $previousStatus = $order->getStatus();
+
         $order->setStatus($newStatus);
         $order->setEquipmentLoan($equipmentLoan);
         $order->setEquipmentReturned($equipmentReturned);
@@ -188,6 +192,33 @@ class StaffController extends AbstractController
         } catch (\Throwable $e) {
             $logger->error('Échec de la mise à jour de la commande staff.', ['error' => $e->getMessage()]);
             return new JsonResponse(['success' => false, 'message' => 'Erreur lors de la mise à jour.'], 500);
+        }
+
+        // Save menu stats in MongoDB when order is marked as terminée for the first time
+        if ($newStatus === OrderStatus::Terminee && $previousStatus !== OrderStatus::Terminee) {
+            foreach ($order->getOrderMenus() as $orderMenu) {
+                $menu       = $orderMenu->getMenu();
+                $quantity   = $orderMenu->getQuantity() ?? 0;
+                $unitPrice  = (float) ($orderMenu->getPricePerPerson() ?? '0');
+                $totalPrice = number_format($quantity * $unitPrice, 2, '.', '');
+
+                try {
+                    $mongoDBService->insertOne('menu_stats', [
+                        'order_id'   => $order->getId(),
+                        'user_id'    => $order->getUser()->getId(),
+                        'menu_id'    => $menu->getId(),
+                        'menu_name'  => $menu->getTitle(),
+                        'quantity'   => $quantity,
+                        'total_price' => $totalPrice,
+                        'order_date' => $order->getOrderDate()?->format('Y-m-d H:i:s') ?? '',
+                    ]);
+                } catch (\Throwable $e) {
+                    $logger->error('Échec de l\'enregistrement des stats MongoDB.', [
+                        'order_id' => $order->getId(),
+                        'error'    => $e->getMessage(),
+                    ]);
+                }
+            }
         }
 
         $client = $order->getUser();
@@ -700,10 +731,10 @@ class StaffController extends AbstractController
         imagealphablending($dst, false);
         imagesavealpha($dst, true);
         imagecopyresampled($dst, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-        imagedestroy($src);
+        unset($src);
 
         $ok = imagewebp($dst, $destination, $quality);
-        imagedestroy($dst);
+        unset($dst);
         gc_collect_cycles();
         ini_set('memory_limit', $oldLimit);
 
