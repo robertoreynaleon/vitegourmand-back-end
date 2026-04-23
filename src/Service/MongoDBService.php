@@ -145,4 +145,47 @@ class MongoDBService
 
         return $result->getMatchedCount() > 0;
     }
+
+    /**
+     * Finds documents matching optional filters (menu_id, date_from, date_to).
+     * Date fields are compared as strings in "Y-m-d H:i:s" format.
+     *
+     * @param array{menu_id?: int, date_from?: string, date_to?: string} $filters
+     */
+    public function findByFilters(string $collection, array $filters = []): array
+    {
+        $allowed = ['reviews', 'menu_stats', 'order_status_history'];
+        if (!in_array($collection, $allowed, true)) {
+            return [];
+        }
+
+        $query = [];
+
+        if (!empty($filters['menu_id'])) {
+            $query['menu_id'] = (int) $filters['menu_id'];
+        }
+
+        $dateFilter = [];
+        if (!empty($filters['date_from'])) {
+            $dateFilter['$gte'] = $filters['date_from'];
+        }
+        if (!empty($filters['date_to'])) {
+            $dateFilter['$lte'] = $filters['date_to'];
+        }
+        if (!empty($dateFilter)) {
+            $query['order_date'] = $dateFilter;
+        }
+
+        $coll   = $this->client->selectDatabase($this->dbName)->selectCollection($collection);
+        $cursor = $coll->find($query, ['sort' => ['order_date' => -1]]);
+
+        $results = [];
+        foreach ($cursor as $doc) {
+            $row        = (array) $doc;
+            $row['_id'] = (string) $doc['_id'];
+            $results[]  = $row;
+        }
+
+        return $results;
+    }
 }
