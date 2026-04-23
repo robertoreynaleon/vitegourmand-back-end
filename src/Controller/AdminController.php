@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use App\Service\MailService;
+use App\Service\MongoDBService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -167,5 +168,29 @@ class AdminController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse(['message' => 'Employé supprimé.']);
+    }
+
+    /**
+     * GET /api/admin/stats
+     * Returns menu_stats documents from MongoDB, optionally filtered.
+     * Query params: menu_id (int), date_from (Y-m-d), date_to (Y-m-d)
+     */
+    #[Route('/stats', name: 'api_admin_stats', methods: ['GET'])]
+    public function stats(Request $request, MongoDBService $mongoDBService): JsonResponse
+    {
+        if ($err = $this->checkAdmin()) return $err;
+
+        $menuId   = $request->query->get('menu_id');
+        $dateFrom = $request->query->get('date_from');
+        $dateTo   = $request->query->get('date_to');
+
+        $filters = [];
+        if ($menuId !== null && $menuId !== '')     $filters['menu_id']   = (int) $menuId;
+        if ($dateFrom !== null && $dateFrom !== '') $filters['date_from'] = $dateFrom . ' 00:00:00';
+        if ($dateTo   !== null && $dateTo   !== '') $filters['date_to']   = $dateTo   . ' 23:59:59';
+
+        $docs = $mongoDBService->findByFilters('menu_stats', $filters);
+
+        return new JsonResponse($docs);
     }
 }
