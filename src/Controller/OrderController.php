@@ -16,6 +16,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Contrôleur de gestion des commandes côté utilisateur.
+ * Permet de créer, consulter, modifier et annuler une commande.
+ * Toutes les routes nécessitent un JWT valide.
+ */
 #[Route('/api/orders')]
 class OrderController extends AbstractController
 {
@@ -76,7 +81,7 @@ class OrderController extends AbstractController
                 $parsedDate->setTimezone(new \DateTimeZone('Europe/Paris'));
                 $order->setOrderDate($parsedDate);
             } catch (\Throwable) {
-                // garde la date du constructeur en fallback
+                // Date invalide : on garde la date par défaut du constructeur
             }
         }
         $order->setDeliveryDate($deliveryDate);
@@ -240,13 +245,13 @@ class OrderController extends AbstractController
         $order->setDeliveryFee((string) round($rawDeliveryFee, 2));
         $order->setTotalAmount((string) round($rawTotalAmount, 2));
 
-        // Supprimer les anciennes lignes
+        // Étape 1 : suppression des anciennes lignes de commande (OrderMenu)
         foreach ($order->getOrderMenus() as $existing) {
             $entityManager->remove($existing);
         }
         $entityManager->flush();
 
-        // Recréer les lignes
+        // Étape 2 : recréation des nouvelles lignes avec les données mises à jour
         foreach ($items as $item) {
             $menuId   = (int)   ($item['menuId']         ?? 0);
             $quantity = (int)   ($item['quantity']       ?? 0);

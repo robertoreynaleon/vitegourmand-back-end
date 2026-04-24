@@ -8,6 +8,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Contrôleur du panier.
+ * Valide les articles côté serveur avant que le client ne les stocke dans localStorage.
+ */
 #[Route('/api/cart')]
 class CartController extends AbstractController
 {

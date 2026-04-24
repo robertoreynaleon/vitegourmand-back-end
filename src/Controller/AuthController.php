@@ -17,8 +17,18 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Contrôleur d'authentification.
+ * Gère la connexion et la création de compte utilisateur.
+ */
 class AuthController extends AbstractController
 {
+    /**
+     * POST /auth/login
+     *
+     * Authentifie un utilisateur par email et mot de passe.
+     * Retourne un token JWT ainsi que les données de l'utilisateur si les identifiants sont valides.
+     */
     #[Route('/auth/login', name: 'auth_login', methods: ['POST'])]
     public function login(
         Request $request,
@@ -30,16 +40,20 @@ class AuthController extends AbstractController
         $email = trim((string) ($data['email'] ?? ''));
         $password = (string) ($data['password'] ?? '');
 
+        // Vérification que les deux champs sont renseignés
         if ($email === '' || $password === '') {
             return new JsonResponse(['code' => 400, 'message' => 'Email et mot de passe requis.'], 400);
         }
 
+        // Recherche de l'utilisateur par email
         $user = $userRepository->findOneBy(['email' => $email]);
 
+        // Si l'utilisateur n'existe pas ou que le mot de passe est incorrect, on renvoie une 401
         if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
-            return new JsonResponse(['code' => 401, 'message' => 'Invalid credentials.'], 401);
+            return new JsonResponse(['code' => 401, 'message' => 'Identifiants invalides.'], 401);
         }
 
+        // Génération du token JWT signé avec la clé privée RS256
         $token = $jwtManager->create($user);
 
         return new JsonResponse([
@@ -58,6 +72,13 @@ class AuthController extends AbstractController
         ]);
     }
 
+    /**
+     * POST /auth/register/
+     *
+     * Crée un nouveau compte utilisateur avec le rôle « client ».
+     * Valide tous les champs, hache le mot de passe, persiste l'utilisateur
+     * et envoie un e-mail de bienvenue.
+     */
     #[Route('/auth/register/', name: 'auth_register', methods: ['POST'])]
     public function register(
         Request $request,
@@ -69,7 +90,7 @@ class AuthController extends AbstractController
         CsrfTokenManagerInterface $csrfTokenManager,
         MailService $mailService
     ): JsonResponse {
-        // Use $_POST as requested, but fall back to Request for safety.
+        // Lecture des données POST (formulaire x-www-form-urlencoded)
         $post = $_POST ?: $request->request->all();
 
         $name = trim((string) ($post['name'] ?? ''));
@@ -82,13 +103,13 @@ class AuthController extends AbstractController
         $password = (string) ($post['password'] ?? '');
         $passwordConfirm = (string) ($post['password_confirm'] ?? '');
 
-        // Optional CSRF check (front-end can send _csrf_token later).
+        // Vérification CSRF optionnelle — le frontend peut envoyer _csrf_token pour plus de sécurité
         $csrfTokenValue = (string) ($post['_csrf_token'] ?? '');
         if ($csrfTokenValue !== '') {
             $token = new CsrfToken('register', $csrfTokenValue);
             if (!$csrfTokenManager->isTokenValid($token)) {
-                $logger->warning('Invalid CSRF token during registration attempt.');
-                return new JsonResponse(['success' => false, 'message' => 'Requete invalide.'], 400);
+                $logger->warning('Tentative d\'inscription avec un token CSRF invalide.');
+                return new JsonResponse(['success' => false, 'message' => 'Requête invalide.'], 400);
             }
         }
 
@@ -175,8 +196,8 @@ class AuthController extends AbstractController
         try {
             $mailService->sendWelcome($user);
         } catch (\Throwable $e) {
-            $logger->error('Welcome email failed.', ['error' => $e->getMessage()]);
-            // Non-blocking: registration succeeds even if email fails
+            // L'échec de l'e-mail n'annule pas l'inscription — on logue juste l'erreur
+            $logger->error('Échec d\'envoi de l\'e-mail de bienvenue.', ['error' => $e->getMessage()]);
         }
 
         return new JsonResponse([

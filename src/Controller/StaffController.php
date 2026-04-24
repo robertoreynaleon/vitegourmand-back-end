@@ -23,6 +23,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Contrôleur de l'espace staff et administrateur.
+ * Gère les commandes, le catalogue (menus, plats, allergies) et la messagerie de contact.
+ * Toutes les routes nécessitent ROLE_STAFF_MEMBER ou ROLE_ADMIN.
+ */
 #[Route('/api/staff')]
 class StaffController extends AbstractController
 {
@@ -194,7 +199,7 @@ class StaffController extends AbstractController
             return new JsonResponse(['success' => false, 'message' => 'Erreur lors de la mise à jour.'], 500);
         }
 
-        // Save menu stats in MongoDB when order is marked as terminée for the first time
+        // Enregistrement des stats dans MongoDB lors du premier passage au statut « terminée »
         if ($newStatus === OrderStatus::Terminee && $previousStatus !== OrderStatus::Terminee) {
             foreach ($order->getOrderMenus() as $orderMenu) {
                 $menu       = $orderMenu->getMenu();
@@ -489,7 +494,7 @@ class StaffController extends AbstractController
             if (!in_array($file->getMimeType(), $allowed, true)) continue;
             $filename    = bin2hex(random_bytes(12)) . '.webp';
             $destination = $uploadDir . $filename;
-            // Move to a temp path first, then compress in-place
+        // Déplacement du fichier uploadé, puis compression en WebP
             $file->move($uploadDir, $filename);
             $this->compressImage($destination, $destination, 1920, 85);
             $img = new MenuImage();
@@ -571,7 +576,7 @@ class StaffController extends AbstractController
         $menu->setAdvanceOrderDays($advanceDays >= 0 ? $advanceDays : 2);
 
         // Suppression des anciens plats — flush immédiat pour éviter la violation
-        // de la contrainte unique (menu_id, dish_id) lors du re-ajout
+        // de contrainte unique (menu_id, dish_id) lors du re-ajout
         foreach ($menu->getMenuDishes()->toArray() as $md) {
             $entityManager->remove($md);
         }
@@ -609,12 +614,12 @@ class StaffController extends AbstractController
         $publicDir     = $this->getParameter('kernel.project_dir') . '/public/';
         $pathsToDelete = [];
 
-        // Snapshot BEFORE any remove() — needed for correct $keptCount below
+        // Capture de la liste des images avant suppressions pour calculer le plafond correct
         $allImages = $menu->getImages()->toArray();
 
         foreach ($allImages as $img) {
             if (in_array($img->getId(), $removedIds, true)) {
-                // Collect path — file deletion happens after successful flush
+                // Chemins à supprimer physiquement après le flush réussi
                 $pathsToDelete[] = $publicDir . ltrim($img->getImagePath(), '/');
                 $entityManager->remove($img);
             }
@@ -648,7 +653,7 @@ class StaffController extends AbstractController
             return new JsonResponse(['message' => 'Erreur lors de la modification : ' . $e->getMessage()], 500);
         }
 
-        // Suppression physique des fichiers — uniquement après flush réussi
+        // Suppression physique des fichiers image — uniquement après un flush réussi
         foreach ($pathsToDelete as $path) {
             if (is_file($path)) {
                 @unlink($path);
@@ -702,6 +707,11 @@ class StaffController extends AbstractController
         return new JsonResponse(['message' => 'Menu supprimé avec succès.']);
     }
 
+    /**
+     * Compresse et redimensionne une image WebP en utilisant GD.
+     * Limite la largeur à maxWidth pixels en conservant le ratio, avec la qualité spécifiée.
+     * Retourne false si GD n'est pas disponible ou si l'image est invalide.
+     */
     private function compressImage(string $source, string $destination, int $maxWidth = 1920, int $quality = 85): bool
     {
         if (!function_exists('imagecreatefromwebp')) {

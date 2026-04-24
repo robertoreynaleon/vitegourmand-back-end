@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Contrôleur de gestion des avis clients.
+ * Gère la création, la consultation et la modification des avis (collection MongoDB « reviews »).
+ * Le staff peut valider ou refuser les avis avant publication sur la page d'accueil.
+ */
 #[Route('/api')]
 class ReviewController extends AbstractController
 {
@@ -22,7 +27,10 @@ class ReviewController extends AbstractController
 
     /**
      * POST /api/reviews
-     * Create a review for a "terminée" order belonging to the current user.
+     *
+     * Crée un avis pour une commande « terminée » appartenant à l'utilisateur connecté.
+     * Un seul avis est autorisé par commande et par utilisateur.
+     * L'avis est créé avec le statut « En attente de validation ».
      */
     #[Route('/reviews', name: 'api_review_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
@@ -55,7 +63,7 @@ class ReviewController extends AbstractController
             return new JsonResponse(['message' => 'Vous ne pouvez commenter qu\'une commande terminée.'], 403);
         }
 
-        // One review per order per user
+        // Vérification qu'il n'existe pas déjà un avis pour cette commande et cet utilisateur
         $existing = $this->mongo->findByField('reviews', 'order_id', $orderId);
         foreach ($existing as $rev) {
             if ((int) ($rev['user_id'] ?? 0) === $user->getId()) {
@@ -79,7 +87,8 @@ class ReviewController extends AbstractController
 
     /**
      * GET /api/reviews/my
-     * Returns all reviews for the current user (including "En attente de validation").
+     *
+     * Retourne tous les avis de l'utilisateur connecté, y compris ceux en attente de validation.
      */
     #[Route('/reviews/my', name: 'api_review_my', methods: ['GET'])]
     public function my(): JsonResponse
@@ -97,7 +106,9 @@ class ReviewController extends AbstractController
 
     /**
      * PUT /api/reviews/{id}
-     * User updates a "Non validé" review (re-submits for moderation).
+     *
+     * Permet à l'utilisateur de modifier un avis refusé (statut « Non validé »).
+     * L'avis repasse en « En attente de validation » après modification.
      */
     #[Route('/reviews/{id}', name: 'api_review_update', methods: ['PUT'])]
     public function update(string $id, Request $request): JsonResponse
@@ -149,8 +160,9 @@ class ReviewController extends AbstractController
 
     /**
      * GET /api/staff/reviews
-     * Returns all "En attente de validation" reviews enriched with user first names.
-     * Staff only.
+     *
+     * Retourne tous les avis en attente de validation enrichis du prénom de l'auteur.
+     * Accessible au staff et aux administrateurs uniquement.
      */
     #[Route('/staff/reviews', name: 'api_staff_reviews', methods: ['GET'])]
     public function staffIndex(): JsonResponse
@@ -180,7 +192,9 @@ class ReviewController extends AbstractController
 
     /**
      * PATCH /api/staff/reviews/{id}/status
-     * Staff validates or refuses a review.
+     *
+     * Valide ou refuse un avis selon l'action envoyée (« validate » ou « refuse »).
+     * Accessible au staff et aux administrateurs uniquement.
      */
     #[Route('/staff/reviews/{id}/status', name: 'api_staff_review_status', methods: ['PATCH'])]
     public function staffUpdateStatus(string $id, Request $request): JsonResponse

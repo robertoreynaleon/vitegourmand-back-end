@@ -218,6 +218,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void
     {
-        // Clear temporary sensitive data if stored
+        // Efface les données sensibles temporaires si elles ont été stockées
     }
 }

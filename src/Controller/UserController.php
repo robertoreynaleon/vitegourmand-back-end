@@ -16,9 +16,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Contrôleur de l'espace utilisateur connecté.
+ * Gère la consultation/modification du profil et la liste des commandes.
+ * Toutes les routes sont protégées (/api/user/*) et nécessitent un JWT valide.
+ */
 #[Route('/api/user')]
 class UserController extends AbstractController
 {
+    /**
+     * GET /api/user/me
+     *
+     * Retourne le profil complet de l'utilisateur actuellement connecté.
+     */
     #[Route('/me', name: 'api_user_me', methods: ['GET'])]
     public function me(): JsonResponse
     {
@@ -42,6 +52,13 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * PUT /api/user/me
+     *
+     * Met à jour le profil de l'utilisateur connecté (nom, email, adresse, etc.).
+     * Si un nouveau mot de passe est fourni, il est validé puis haché.
+     * Un e-mail de confirmation est envoyé dans les deux cas.
+     */
     #[Route('/me', name: 'api_user_update', methods: ['PUT'])]
     public function update(
         Request $request,
@@ -94,7 +111,7 @@ class UserController extends AbstractController
             return new JsonResponse(['success' => false, 'message' => 'Les informations fournies sont invalides.', 'fields' => $errors], 400);
         }
 
-        // Vérifier si le nouvel email est déjà pris par un autre compte
+        // Vérification que le nouvel email n'est pas déjà utilisé par un autre compte
         if ($email !== $currentUser->getEmail()) {
             $existing = $userRepository->findOneBy(['email' => $email]);
             if ($existing && $existing->getId() !== $currentUser->getId()) {
@@ -146,6 +163,12 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * DELETE /api/user/me
+     *
+     * Supprime définitivement le compte de l'utilisateur connecté.
+     * Supprime d'abord ses avis MongoDB, puis ses commandes MySQL, puis l'entité utilisateur.
+     */
     #[Route('/me', name: 'api_user_delete', methods: ['DELETE'])]
     public function delete(
         EntityManagerInterface $entityManager,
@@ -163,21 +186,21 @@ class UserController extends AbstractController
         $userId = $currentUser->getId();
 
         try {
-            // 1. Supprimer les reviews MongoDB (cascade via user_id)
+            // Étape 1 : suppression des avis MongoDB liés à cet utilisateur
             $mongo->deleteByField('reviews', 'user_id', $userId);
 
-            // 2. Supprimer les commandes MySQL (OrderMenu supprimés en cascade via l'entité Order)
+            // Étape 2 : suppression des commandes MySQL (les lignes OrderMenu sont en cascade)
             $orders = $orderRepository->findBy(['user' => $currentUser]);
             foreach ($orders as $order) {
                 $entityManager->remove($order);
             }
 
-            // 3. Supprimer l'utilisateur
+            // Étape 3 : suppression de l'utilisateur lui-même
             $entityManager->remove($currentUser);
             $entityManager->flush();
 
         } catch (\Throwable $e) {
-            $logger->error('Account deletion failed.', ['user_id' => $userId, 'error' => $e->getMessage()]);
+            $logger->error('Suppression de compte échouée.', ['user_id' => $userId, 'error' => $e->getMessage()]);
             return new JsonResponse(['success' => false, 'message' => 'Erreur lors de la suppression du compte.'], 500);
         }
 

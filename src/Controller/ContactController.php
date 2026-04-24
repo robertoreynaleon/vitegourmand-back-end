@@ -10,10 +10,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Contrôleur du formulaire de contact.
+ * Gère la réception des messages visiteurs et la gestion staff (lecture, réponse).
+ * Les messages sont stockés dans la collection MongoDB « contact_messages ».
+ */
 class ContactController extends AbstractController
 {
+    /** Nom de la collection MongoDB utilisée pour les messages de contact. */
     private const COLLECTION = 'contact_messages';
 
+    /**
+     * Vérifie que l'utilisateur connecté est staff ou admin.
+     * Retourne une réponse d'erreur JSON si la vérification échoue, null sinon.
+     */
     private function checkStaffOrAdmin(): ?JsonResponse
     {
         $user = $this->getUser();
@@ -29,7 +39,9 @@ class ContactController extends AbstractController
 
     /**
      * POST /api/contact
-     * Public endpoint — any visitor can submit a contact message.
+     *
+     * Point d'entrée public — n'importe quel visiteur peut envoyer un message de contact.
+     * Valide le format de l'email, du sujet et du contenu avant l'insertion MongoDB.
      */
     #[Route('/api/contact', name: 'api_contact_submit', methods: ['POST'])]
     public function submit(Request $request, MongoDBService $mongoDBService): JsonResponse
@@ -64,7 +76,9 @@ class ContactController extends AbstractController
 
     /**
      * GET /api/staff/messages
-     * Returns all contact messages sorted by sent_at DESC (staff + admin).
+     *
+     * Retourne tous les messages de contact triés par date d'envoi décroissante.
+     * Accessible au staff et aux administrateurs.
      */
     #[Route('/api/staff/messages', name: 'api_staff_messages_list', methods: ['GET'])]
     public function list(MongoDBService $mongoDBService): JsonResponse
@@ -80,7 +94,9 @@ class ContactController extends AbstractController
 
     /**
      * PATCH /api/staff/messages/{id}/read
-     * Marks a message as read (staff + admin).
+     *
+     * Marque un message comme lu. N'effectue la mise à jour que si le message est encore « unread ».
+     * Accessible au staff et aux administrateurs.
      */
     #[Route('/api/staff/messages/{id}/read', name: 'api_staff_messages_read', methods: ['PATCH'])]
     public function markRead(string $id, MongoDBService $mongoDBService): JsonResponse
@@ -101,7 +117,10 @@ class ContactController extends AbstractController
 
     /**
      * PATCH /api/staff/messages/{id}/reply
-     * Saves staff_response, sets status "replied", sends email (staff + admin).
+     *
+     * Enregistre la réponse du staff, passe le statut à « replied »
+     * et envoie un e-mail de réponse au visiteur.
+     * Accessible au staff et aux administrateurs.
      */
     #[Route('/api/staff/messages/{id}/reply', name: 'api_staff_messages_reply', methods: ['PATCH'])]
     public function reply(
@@ -138,7 +157,8 @@ class ContactController extends AbstractController
                 $staffResponse
             );
         } catch (\Throwable $e) {
-            $logger->error('Contact reply email failed.', ['id' => $id, 'error' => $e->getMessage()]);
+            // L'échec de l'e-mail n'annule pas la réponse — le message reste marqué « replied »
+            $logger->error('Échec de l\'envoi du mail de réponse contact.', ['id' => $id, 'error' => $e->getMessage()]);
         }
 
         return new JsonResponse(['message' => 'Réponse envoyée.']);

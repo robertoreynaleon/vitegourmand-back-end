@@ -15,9 +15,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Contrôleur de l'espace administrateur.
+ * Gère la création, la liste et la suppression des comptes employés,
+ * ainsi que la consultation des statistiques MongoDB par menu.
+ * Toutes les routes nécessitent ROLE_ADMIN.
+ */
 #[Route('/api/admin')]
 class AdminController extends AbstractController
 {
+    /**
+     * Vérifie que l'utilisateur connecté est bien administrateur.
+     * Retourne une réponse d'erreur JSON si la vérification échoue, null sinon.
+     */
     private function checkAdmin(): ?JsonResponse
     {
         $user = $this->getUser();
@@ -127,7 +137,8 @@ class AdminController extends AbstractController
         try {
             $mailService->sendStaffWelcome($newUser);
         } catch (\Throwable $e) {
-            $logger->error('Staff welcome email failed.', ['user_id' => $newUser->getId(), 'error' => $e->getMessage()]);
+            // L'échec de l'e-mail n'annule pas la création du compte
+            $logger->error('Échec de l\'envoi du mail de bienvenue employé.', ['user_id' => $newUser->getId(), 'error' => $e->getMessage()]);
         }
 
         return new JsonResponse([
@@ -159,7 +170,7 @@ class AdminController extends AbstractController
             return new JsonResponse(['message' => 'Utilisateur introuvable.'], 404);
         }
 
-        // Only staff members can be deleted through this endpoint
+        // Seuls les comptes employés (ROLE_STAFF_MEMBER) peuvent être supprimés via ce point d'entrée
         if (!in_array('ROLE_STAFF_MEMBER', $user->getRoles(), true)) {
             return new JsonResponse(['message' => 'Seuls les employés peuvent être supprimés via cet endpoint.'], 403);
         }

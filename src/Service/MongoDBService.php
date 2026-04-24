@@ -5,19 +5,35 @@ namespace App\Service;
 use MongoDB\Client;
 use MongoDB\BSON\ObjectId;
 
+/**
+ * Service d'accès à la base de données MongoDB.
+ * Fournit des méthodes génériques (find, insert, update, delete, count)
+ * sur une liste de collections autorisées (liste blanche de sécurité).
+ * Utilisé par les contrôleurs pour les données non relationnelles :
+ * avis, stats menus, historique commandes, messages de contact.
+ */
 class MongoDBService
 {
     private Client $client;
     private string $dbName;
 
+    /** Collections MongoDB accessibles via ce service. */
     private const ALLOWED = ['reviews', 'menu_stats', 'order_status_history', 'contact_messages'];
 
+    /**
+     * Initialise la connexion MongoDB avec l'URL et le nom de base fournis
+     * (injectés depuis la configuration Symfony via services.yaml).
+     */
     public function __construct(string $mongodbUrl, string $mongodbDatabase)
     {
         $this->client = new Client($mongodbUrl);
         $this->dbName = $mongodbDatabase;
     }
 
+    /**
+     * Retourne tous les documents d'une collection (jusqu'à $limit résultats).
+     * L'_id MongoDB est converti en chaîne de caractères pour la sérialisation JSON.
+     */
     public function findAll(string $collection, int $limit = 100): array
     {
         if (!in_array($collection, self::ALLOWED, true)) {
@@ -37,6 +53,10 @@ class MongoDBService
         return $results;
     }
 
+    /**
+     * Supprime tous les documents d'une collection où le champ $field vaut $value.
+     * Retourne le nombre de documents supprimés.
+     */
     public function deleteByField(string $collection, string $field, mixed $value): int
     {
         if (!in_array($collection, self::ALLOWED, true)) {
@@ -51,10 +71,14 @@ class MongoDBService
         return $result->getDeletedCount();
     }
 
+    /**
+     * Insère un document dans la collection et retourne son _id sous forme de chaîne.
+     * Lève une exception si la collection n'est pas autorisée.
+     */
     public function insertOne(string $collection, array $data): string
     {
         if (!in_array($collection, self::ALLOWED, true)) {
-            throw new \InvalidArgumentException('Collection not allowed.');
+            throw new \InvalidArgumentException('Collection non autorisée.');
         }
 
         $result = $this->client
@@ -65,6 +89,10 @@ class MongoDBService
         return (string) $result->getInsertedId();
     }
 
+    /**
+     * Recherche les documents d'une collection dont le champ $field correspond à $value.
+     * Les résultats sont triés par created_at décroissant.
+     */
     public function findByField(string $collection, string $field, mixed $value): array
     {
         if (!in_array($collection, self::ALLOWED, true)) {
@@ -84,6 +112,10 @@ class MongoDBService
         return $results;
     }
 
+    /**
+     * Retrouve un document unique par son _id MongoDB.
+     * Retourne null si l'identifiant est invalide ou si le document est introuvable.
+     */
     public function findOneById(string $collection, string $id): ?array
     {
         if (!in_array($collection, self::ALLOWED, true)) {
@@ -105,6 +137,10 @@ class MongoDBService
         return $row;
     }
 
+    /**
+     * Recherche les documents d'une collection dont le champ "status" correspond à $status.
+     * Les résultats sont triés par created_at décroissant.
+     */
     public function findByStatus(string $collection, string $status): array
     {
         if (!in_array($collection, self::ALLOWED, true)) {
@@ -124,6 +160,10 @@ class MongoDBService
         return $results;
     }
 
+    /**
+     * Met à jour les champs spécifiés dans $update d'un document identifié par son _id.
+     * Retourne true si au moins un document a été trouvé et modifié, false sinon.
+     */
     public function updateOneById(string $collection, string $id, array $update): bool
     {
         if (!in_array($collection, self::ALLOWED, true)) {
@@ -142,8 +182,8 @@ class MongoDBService
     }
 
     /**
-     * Finds documents matching optional filters (menu_id, date_from, date_to).
-     * Date fields are compared as strings in "Y-m-d H:i:s" format.
+     * Recherche des documents selon des filtres optionnels (menu_id, date_from, date_to).
+     * Les champs de date sont comparés sous forme de chaînes au format « Y-m-d H:i:s ».
      *
      * @param array{menu_id?: int, date_from?: string, date_to?: string} $filters
      */
@@ -184,7 +224,7 @@ class MongoDBService
     }
 
     /**
-     * Counts documents matching a field/value pair.
+     * Compte le nombre de documents d'une collection dont le champ $field vaut $value.
      */
     public function countByField(string $collection, string $field, mixed $value): int
     {
