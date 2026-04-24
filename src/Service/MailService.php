@@ -142,4 +142,19 @@ class MailService
 
         $this->mailer->send($email);
     }
+
+    public function sendContactReply(string $clientEmail, string $subject, string $staffResponse): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to($clientEmail)
+            ->subject('Réponse à votre message : ' . $subject)
+            ->htmlTemplate('emails/contact_reply.html.twig')
+            ->context([
+                'subject'       => $subject,
+                'staffResponse' => $staffResponse,
+            ]);
+
+        $this->mailer->send($email);
+    }
 }

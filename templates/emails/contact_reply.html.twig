@@ -1,0 +1,25 @@
+{% extends 'emails/layout.html.twig' %}
+
+{% block subject %}Réponse à votre message : {{ subject }}{% endblock %}
+
+{% block content %}
+    <h2>Réponse à votre message</h2>
+
+    <p>Bonjour,</p>
+
+    <p>Nous avons bien reçu votre message concernant : <strong>{{ subject }}</strong></p>
+
+    <p>Voici la réponse de notre équipe :</p>
+
+    <div class="highlight-box">
+        <p>{{ staffResponse|nl2br }}</p>
+    </div>
+
+    <p>Si vous avez d'autres questions, n'hésitez pas à nous contacter à nouveau depuis notre site.</p>
+
+    <p>
+        <a href="http://localhost:3000/contact/" class="btn">Nous contacter</a>
+    </p>
+
+    <p>Cordialement,<br>L'équipe Vite & Gourmand</p>
+{% endblock %}

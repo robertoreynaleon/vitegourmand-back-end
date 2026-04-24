@@ -10,6 +10,8 @@ class MongoDBService
     private Client $client;
     private string $dbName;
 
+    private const ALLOWED = ['reviews', 'menu_stats', 'order_status_history', 'contact_messages'];
+
     public function __construct(string $mongodbUrl, string $mongodbDatabase)
     {
         $this->client = new Client($mongodbUrl);
@@ -18,8 +20,7 @@ class MongoDBService
 
     public function findAll(string $collection, int $limit = 100): array
     {
-        $allowed = ['reviews', 'menu_stats', 'order_status_history'];
-        if (!in_array($collection, $allowed, true)) {
+        if (!in_array($collection, self::ALLOWED, true)) {
             return [];
         }
 
@@ -38,8 +39,7 @@ class MongoDBService
 
     public function deleteByField(string $collection, string $field, mixed $value): int
     {
-        $allowed = ['reviews', 'menu_stats', 'order_status_history'];
-        if (!in_array($collection, $allowed, true)) {
+        if (!in_array($collection, self::ALLOWED, true)) {
             return 0;
         }
 
@@ -53,8 +53,7 @@ class MongoDBService
 
     public function insertOne(string $collection, array $data): string
     {
-        $allowed = ['reviews', 'menu_stats', 'order_status_history'];
-        if (!in_array($collection, $allowed, true)) {
+        if (!in_array($collection, self::ALLOWED, true)) {
             throw new \InvalidArgumentException('Collection not allowed.');
         }
 
@@ -68,8 +67,7 @@ class MongoDBService
 
     public function findByField(string $collection, string $field, mixed $value): array
     {
-        $allowed = ['reviews', 'menu_stats', 'order_status_history'];
-        if (!in_array($collection, $allowed, true)) {
+        if (!in_array($collection, self::ALLOWED, true)) {
             return [];
         }
 
@@ -88,8 +86,7 @@ class MongoDBService
 
     public function findOneById(string $collection, string $id): ?array
     {
-        $allowed = ['reviews', 'menu_stats', 'order_status_history'];
-        if (!in_array($collection, $allowed, true)) {
+        if (!in_array($collection, self::ALLOWED, true)) {
             return null;
         }
 
@@ -110,8 +107,7 @@ class MongoDBService
 
     public function findByStatus(string $collection, string $status): array
     {
-        $allowed = ['reviews', 'menu_stats', 'order_status_history'];
-        if (!in_array($collection, $allowed, true)) {
+        if (!in_array($collection, self::ALLOWED, true)) {
             return [];
         }
 
@@ -130,8 +126,7 @@ class MongoDBService
 
     public function updateOneById(string $collection, string $id, array $update): bool
     {
-        $allowed = ['reviews', 'menu_stats', 'order_status_history'];
-        if (!in_array($collection, $allowed, true)) {
+        if (!in_array($collection, self::ALLOWED, true)) {
             return false;
         }
 
@@ -154,8 +149,7 @@ class MongoDBService
      */
     public function findByFilters(string $collection, array $filters = []): array
     {
-        $allowed = ['reviews', 'menu_stats', 'order_status_history'];
-        if (!in_array($collection, $allowed, true)) {
+        if (!in_array($collection, self::ALLOWED, true)) {
             return [];
         }
 
@@ -187,5 +181,20 @@ class MongoDBService
         }
 
         return $results;
+    }
+
+    /**
+     * Counts documents matching a field/value pair.
+     */
+    public function countByField(string $collection, string $field, mixed $value): int
+    {
+        if (!in_array($collection, self::ALLOWED, true)) {
+            return 0;
+        }
+
+        return (int) $this->client
+            ->selectDatabase($this->dbName)
+            ->selectCollection($collection)
+            ->countDocuments([$field => $value]);
     }
 }
