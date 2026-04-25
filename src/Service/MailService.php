@@ -192,4 +192,29 @@ class MailService
 
         $this->mailer->send($email);
     }
+
+    /**
+     * Envoie le lien de réinitialisation de mot de passe à l'utilisateur.
+     * Le lien pointe vers la page frontend (/auth/reset-password?token=...).
+     *
+     * @param User   $user  Utilisateur qui a demandé la réinitialisation
+     * @param string $token Token hexadécimal de 64 caractères à inclure dans l'URL
+     */
+    public function sendPasswordReset(User $user, string $token): void
+    {
+        // Lien renvoyant vers la page React de réinitialisation (frontend, port 3000)
+        $resetLink = 'http://localhost:3000/auth/reset-password?token=' . urlencode($token);
+
+        $email = (new TemplatedEmail())
+            ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
+            ->to(new Address($user->getEmail(), $user->getName() . ' ' . $user->getLastname()))
+            ->subject('Réinitialisation de votre mot de passe')
+            ->htmlTemplate('emails/reset_password.html.twig')
+            ->context([
+                'user'      => $user,
+                'resetLink' => $resetLink,
+            ]);
+
+        $this->mailer->send($email);
+    }
 }

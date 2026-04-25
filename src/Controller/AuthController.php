@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\PasswordResetToken;
+use App\Repository\PasswordResetTokenRepository;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
 use App\Service\MailService;
@@ -204,5 +206,136 @@ class AuthController extends AbstractController
             'success' => true,
             'message' => 'Inscription reussie.'
         ], 201);
+    }
+
+    /**
+     * POST /auth/forgot-password
+     *
+     * Initie la procédure de réinitialisation de mot de passe.
+     * Si l'e-mail correspond à un compte existant, un token est généré et envoyé par e-mail.
+     * La réponse est toujours identique (200 + même message) pour éviter l'énumération des comptes.
+     */
+    #[Route('/auth/forgot-password', name: 'auth_forgot_password', methods: ['POST'])]
+    public function forgotPassword(
+        Request $request,
+        UserRepository $userRepository,
+        PasswordResetTokenRepository $tokenRepository,
+        EntityManagerInterface $entityManager,
+        MailService $mailService,
+        LoggerInterface $logger
+    ): JsonResponse {
+        // Message neutre renvoyé dans tous les cas pour éviter d'indiquer si un compte existe
+        $neutralMessage = 'Si un compte est associé à cet e-mail, un lien de réinitialisation vous a été envoyé.';
+
+        $data  = json_decode($request->getContent(), true);
+        $email = trim((string) ($data['email'] ?? ''));
+
+        // Validation basique du format d'e-mail
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            // On retourne le même message neutre même pour un e-mail malformé
+            return new JsonResponse(['message' => $neutralMessage]);
+        }
+
+        $user = $userRepository->findOneBy(['email' => $email]);
+
+        // Si aucun compte n'est trouvé, on répond identiquement pour éviter l'énumération
+        if (!$user) {
+            return new JsonResponse(['message' => $neutralMessage]);
+        }
+
+        // Génération d'un token cryptographiquement sûr (64 caractères hex = 32 octets)
+        $tokenValue = bin2hex(random_bytes(32));
+
+        $now    = new \DateTimeImmutable();
+        $prt    = new PasswordResetToken();
+        $prt->setUser($user);
+        $prt->setToken($tokenValue);
+        $prt->setCreatedAt($now);
+        // Expiration dans 1 heure
+        $prt->setExpiresAt($now->modify('+1 hour'));
+
+        try {
+            $entityManager->persist($prt);
+            $entityManager->flush();
+        } catch (\Throwable $e) {
+            $logger->error('Échec de la persistance du token de réinitialisation.', ['error' => $e->getMessage()]);
+            // On retourne le message neutre pour ne pas exposer l'erreur interne
+            return new JsonResponse(['message' => $neutralMessage]);
+        }
+
+        try {
+            $mailService->sendPasswordReset($user, $tokenValue);
+        } catch (\Throwable $e) {
+            // L'échec de l'envoi e-mail ne doit pas révéler d'information à l'appelant
+            $logger->error('Échec de l\'envoi de l\'e-mail de réinitialisation.', ['error' => $e->getMessage()]);
+        }
+
+        return new JsonResponse(['message' => $neutralMessage]);
+    }
+
+    /**
+     * POST /auth/reset-password
+     *
+     * Réinitialise le mot de passe de l'utilisateur à partir d'un token valide.
+     * Vérifie que le token existe, n'est pas expiré et n'a pas déjà été utilisé.
+     * Hache le nouveau mot de passe et marque le token comme utilisé.
+     */
+    #[Route('/auth/reset-password', name: 'auth_reset_password', methods: ['POST'])]
+    public function resetPassword(
+        Request $request,
+        PasswordResetTokenRepository $tokenRepository,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher,
+        LoggerInterface $logger
+    ): JsonResponse {
+        $data        = json_decode($request->getContent(), true);
+        $tokenValue  = trim((string) ($data['token'] ?? ''));
+        $newPassword = (string) ($data['password'] ?? '');
+
+        if ($tokenValue === '' || $newPassword === '') {
+            return new JsonResponse(['success' => false, 'message' => 'Données manquantes.'], 400);
+        }
+
+        // Validation de la complexité du mot de passe (identique à l'inscription)
+        if (
+            mb_strlen($newPassword) < 12
+            || !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{12,}$/', $newPassword)
+        ) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => 'Le mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.',
+            ], 400);
+        }
+
+        // Recherche du token (valide = non expiré + non utilisé)
+        $prt = $tokenRepository->findValidToken($tokenValue);
+
+        if (!$prt) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => 'Ce lien de réinitialisation est invalide ou a expiré.',
+            ], 400);
+        }
+
+        $user = $prt->getUser();
+
+        // Hachage du nouveau mot de passe
+        $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
+        $user->setPassword($hashedPassword);
+
+        // Marque le token comme utilisé pour empêcher sa réutilisation
+        $prt->setUsedAt(new \DateTimeImmutable());
+
+        try {
+            $entityManager->flush();
+        } catch (\Throwable $e) {
+            $logger->error('Échec de la réinitialisation du mot de passe.', ['error' => $e->getMessage()]);
+            return new JsonResponse(['success' => false, 'message' => 'Erreur interne.'], 500);
+        }
+
+        return new JsonResponse([
+            'success' => true,
+            'message' => 'Votre mot de passe a été réinitialisé avec succès.',
+        ]);
     }
 }
