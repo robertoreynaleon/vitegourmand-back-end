@@ -39,6 +39,11 @@ class UserController extends AbstractController
             return new JsonResponse(['message' => 'Non authentifié.'], 401);
         }
 
+        // Seuls les clients peuvent accéder à leur espace personnel
+        if (!in_array('ROLE_CLIENT', $user->getRoles(), true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
         return new JsonResponse([
             'id'         => $user->getId(),
             'name'       => $user->getName(),
@@ -73,6 +78,11 @@ class UserController extends AbstractController
 
         if (!$currentUser) {
             return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+
+        // Seuls les clients peuvent modifier leur profil
+        if (!in_array('ROLE_CLIENT', $currentUser->getRoles(), true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
         }
 
         $data = json_decode($request->getContent(), true) ?? [];
@@ -183,6 +193,11 @@ class UserController extends AbstractController
             return new JsonResponse(['message' => 'Non authentifié.'], 401);
         }
 
+        // Seuls les clients peuvent supprimer leur compte
+        if (!in_array('ROLE_CLIENT', $currentUser->getRoles(), true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
         $userId = $currentUser->getId();
 
         try {
@@ -220,6 +235,11 @@ class UserController extends AbstractController
 
         if (!$user) {
             return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+
+        // Seuls les clients peuvent consulter leurs commandes
+        if (!in_array('ROLE_CLIENT', $user->getRoles(), true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
         }
 
         $orders = $orderRepository->findBy(

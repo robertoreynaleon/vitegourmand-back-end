@@ -10,6 +10,12 @@ security:
                 class: App\Entity\User
                 property: email
 
+    # Hiérarchie des rôles : ROLE_ADMIN hérite de ROLE_STAFF_MEMBER.
+    # Ainsi les administrateurs peuvent aussi accéder aux routes /api/staff/.
+    # ROLE_CLIENT est volontairement isolé pour empêcher tout accès croisé.
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_STAFF_MEMBER]
+
     firewalls:
         dev:
             pattern: ^/(_profiler|_wdt|assets|build)/
@@ -21,21 +27,38 @@ security:
             provider: app_user_provider
             jwt: ~
 
-    # Note: Only the *first* matching rule is applied
+    # Note: seule la première règle correspondante est appliquée.
     access_control:
-        - { path: ^/auth/login, roles: PUBLIC_ACCESS }
-        - { path: ^/auth/register, roles: PUBLIC_ACCESS }
+        # ── Routes d'authentification (publiques) ────────────────────────────
+        # Couvre /auth/login, /auth/register, /auth/forgot-password, /auth/reset-password
+        - { path: ^/auth/, roles: PUBLIC_ACCESS }
+
+        # ── API publiques ────────────────────────────────────────────────────
         - { path: ^/api/menus, roles: PUBLIC_ACCESS }
         - { path: ^/api/dishes, roles: PUBLIC_ACCESS }
         - { path: ^/api/mongo, roles: PUBLIC_ACCESS }
         - { path: ^/api/cart, roles: PUBLIC_ACCESS }
         - { path: ^/api/contact$, roles: PUBLIC_ACCESS }
-        - { path: ^/api/orders/, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/order_menus/, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/reviews, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/staff/, roles: IS_AUTHENTICATED_FULLY }
+
+        # ── Routes client uniquement (ROLE_CLIENT) ───────────────────────────
+        # Les employés (ROLE_STAFF_MEMBER) et admins (ROLE_ADMIN) n'ont PAS
+        # ROLE_CLIENT dans la hiérarchie : ils sont bloqués au niveau du pare-feu.
+        - { path: ^/api/orders/, roles: ROLE_CLIENT }
+        - { path: ^/api/user/, roles: ROLE_CLIENT }
+        - { path: ^/api/reviews, roles: ROLE_CLIENT }
+
+        # ── Entité OrderMenu (API Platform) ─────────────────────────────────
+        - { path: ^/api/order_menus/, roles: ROLE_CLIENT }
+
+        # ── Entité User (API Platform) — réservé à l'admin ──────────────────
+        # Protège les endpoints auto-générés /api/users/* contre toute lecture publique.
+        - { path: ^/api/users, roles: ROLE_ADMIN }
+
+        # ── Routes staff (ROLE_STAFF_MEMBER ou ROLE_ADMIN via hiérarchie) ────
+        - { path: ^/api/staff/, roles: ROLE_STAFF_MEMBER }
+
+        # ── Routes admin uniquement ──────────────────────────────────────────
         - { path: ^/api/admin/, roles: ROLE_ADMIN }
-        - { path: ^/api/user/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

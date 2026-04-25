@@ -39,10 +39,16 @@ class OrderController extends AbstractController
         MailService $mailService,
         LoggerInterface $logger
     ): JsonResponse {
+        /** @var \App\Entity\User|null $user */
         $user = $this->getUser();
 
         if (!$user) {
             return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+
+        // Seuls les clients peuvent passer commande — double vérification (défense en profondeur)
+        if (!in_array('ROLE_CLIENT', $user->getRoles(), true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
         }
 
         $data = json_decode($request->getContent(), true) ?? [];
@@ -154,6 +160,11 @@ class OrderController extends AbstractController
             return new JsonResponse(['message' => 'Non authentifié.'], 401);
         }
 
+        // Seuls les clients peuvent consulter leurs commandes
+        if (!in_array('ROLE_CLIENT', $user->getRoles(), true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
         $order = $orderRepository->find($id);
         if (!$order || $order->getUser()->getId() !== $user->getId()) {
             return new JsonResponse(['message' => 'Commande introuvable.'], 404);
@@ -201,6 +212,11 @@ class OrderController extends AbstractController
         $user = $this->getUser();
         if (!$user) {
             return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+
+        // Seuls les clients peuvent modifier leurs commandes
+        if (!in_array('ROLE_CLIENT', $user->getRoles(), true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
         }
 
         $order = $orderRepository->find($id);
@@ -308,6 +324,11 @@ class OrderController extends AbstractController
         $user = $this->getUser();
         if (!$user) {
             return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+
+        // Seuls les clients peuvent annuler leurs commandes
+        if (!in_array('ROLE_CLIENT', $user->getRoles(), true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
         }
 
         $order = $orderRepository->find($id);

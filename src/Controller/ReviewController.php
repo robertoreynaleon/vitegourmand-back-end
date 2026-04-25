@@ -41,6 +41,11 @@ class ReviewController extends AbstractController
             return new JsonResponse(['message' => 'Non authentifié.'], 401);
         }
 
+        // Seuls les clients peuvent publier un avis
+        if (!in_array('ROLE_CLIENT', $user->getRoles(), true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
         $data    = json_decode($request->getContent(), true) ?? [];
         $orderId = (int) ($data['order_id'] ?? 0);
         $rating  = (int) ($data['rating']   ?? 0);
@@ -99,6 +104,11 @@ class ReviewController extends AbstractController
             return new JsonResponse(['message' => 'Non authentifié.'], 401);
         }
 
+        // Seuls les clients ont un historique d'avis personnel
+        if (!in_array('ROLE_CLIENT', $user->getRoles(), true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
+        }
+
         $reviews = $this->mongo->findByField('reviews', 'user_id', $user->getId());
 
         return new JsonResponse($reviews);
@@ -117,6 +127,11 @@ class ReviewController extends AbstractController
         $user = $this->getUser();
         if (!$user) {
             return new JsonResponse(['message' => 'Non authentifié.'], 401);
+        }
+
+        // Seuls les clients peuvent modifier leurs avis
+        if (!in_array('ROLE_CLIENT', $user->getRoles(), true)) {
+            return new JsonResponse(['message' => 'Accès refusé.'], 403);
         }
 
         if (!preg_match('/^[0-9a-f]{24}$/i', $id)) {
