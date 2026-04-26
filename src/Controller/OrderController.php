@@ -57,9 +57,8 @@ class OrderController extends AbstractController
         $deliveryDateStr = trim((string) ($data['deliveryDate']    ?? ''));
         $deliveryTimeStr = trim((string) ($data['deliveryTime']    ?? ''));
         $deliveryAddress = trim((string) ($data['deliveryAddress'] ?? ''));
-        $rawSubtotal     = (float) ($data['subtotal']              ?? 0);
-        $rawDeliveryFee  = (float) ($data['deliveryFee']           ?? 0);
-        $rawTotalAmount  = (float) ($data['totalAmount']           ?? 0);
+        // deliveryFee dépend de la distance de livraison : valeur côté client acceptée
+        $rawDeliveryFee  = max(0.0, (float) ($data['deliveryFee']  ?? 0));
         $equipmentLoan   = (bool)  ($data['equipmentLoan']         ?? false);
         $items           = (array) ($data['items']                 ?? []);
 
@@ -90,39 +89,30 @@ class OrderController extends AbstractController
                 // Date invalide : on garde la date par défaut du constructeur
             }
         }
+        // Calcul des totaux côté serveur : les prix ne sont jamais lus depuis le payload client
+        ['subtotal' => $subtotal, 'orderMenus' => $orderMenus] =
+            $this->computeOrderTotals($items, $menuRepository, $logger);
+
+        $totalAmount = round($subtotal + $rawDeliveryFee, 2);
+
         $order->setDeliveryDate($deliveryDate);
         $order->setDeliveryTime($deliveryTime);
         $order->setDeliveryAddress(strip_tags($deliveryAddress));
-        $order->setSubtotal((string) round($rawSubtotal, 2));
+        $order->setSubtotal((string) $subtotal);
         $order->setDeliveryFee((string) round($rawDeliveryFee, 2));
-        $order->setTotalAmount((string) round($rawTotalAmount, 2));
+        $order->setTotalAmount((string) $totalAmount);
         $order->setEquipmentLoan($equipmentLoan);
         $order->setEquipmentReturned(false);
         $order->setStatus(OrderStatus::EnAttente);
 
         $entityManager->persist($order);
 
-        foreach ($items as $item) {
-            $menuId   = (int)   ($item['menuId']         ?? 0);
-            $quantity = (int)   ($item['quantity']       ?? 0);
-            $price    = (float) ($item['pricePerPerson'] ?? 0);
-
-            if ($menuId <= 0 || $quantity <= 0) {
-                continue;
-            }
-
-            $menu = $menuRepository->find($menuId);
-            if (!$menu) {
-                $logger->warning('Menu introuvable lors de la création de commande.', ['menuId' => $menuId]);
-                continue;
-            }
-
+        foreach ($orderMenus as ['menu' => $menu, 'quantity' => $quantity, 'price' => $price]) {
             $orderMenu = new OrderMenu();
             $orderMenu->setOrder($order);
             $orderMenu->setMenu($menu);
             $orderMenu->setQuantity($quantity);
-            $orderMenu->setPricePerPerson((string) round($price, 2));
-
+            $orderMenu->setPricePerPerson((string) $price);
             $entityManager->persist($orderMenu);
         }
 
@@ -233,9 +223,8 @@ class OrderController extends AbstractController
         $deliveryDateStr = trim((string) ($data['deliveryDate']    ?? ''));
         $deliveryTimeStr = trim((string) ($data['deliveryTime']    ?? ''));
         $deliveryAddress = trim((string) ($data['deliveryAddress'] ?? ''));
-        $rawSubtotal     = (float) ($data['subtotal']              ?? 0);
-        $rawDeliveryFee  = (float) ($data['deliveryFee']           ?? 0);
-        $rawTotalAmount  = (float) ($data['totalAmount']           ?? 0);
+        // deliveryFee dépend de la distance de livraison : valeur côté client acceptée
+        $rawDeliveryFee  = max(0.0, (float) ($data['deliveryFee']  ?? 0));
         $items           = (array) ($data['items']                 ?? []);
 
         if (!$deliveryDateStr || !$deliveryTimeStr || !$deliveryAddress || empty($items)) {
@@ -254,12 +243,18 @@ class OrderController extends AbstractController
             return new JsonResponse(['message' => 'Heure de livraison invalide.'], 400);
         }
 
+        // Calcul des totaux côté serveur : les prix ne sont jamais lus depuis le payload client
+        ['subtotal' => $subtotal, 'orderMenus' => $orderMenus] =
+            $this->computeOrderTotals($items, $menuRepository, $logger);
+
+        $totalAmount = round($subtotal + $rawDeliveryFee, 2);
+
         $order->setDeliveryDate($deliveryDate);
         $order->setDeliveryTime($deliveryTime);
         $order->setDeliveryAddress(strip_tags($deliveryAddress));
-        $order->setSubtotal((string) round($rawSubtotal, 2));
+        $order->setSubtotal((string) $subtotal);
         $order->setDeliveryFee((string) round($rawDeliveryFee, 2));
-        $order->setTotalAmount((string) round($rawTotalAmount, 2));
+        $order->setTotalAmount((string) $totalAmount);
 
         // Étape 1 : suppression des anciennes lignes de commande (OrderMenu)
         foreach ($order->getOrderMenus() as $existing) {
@@ -267,27 +262,13 @@ class OrderController extends AbstractController
         }
         $entityManager->flush();
 
-        // Étape 2 : recréation des nouvelles lignes avec les données mises à jour
-        foreach ($items as $item) {
-            $menuId   = (int)   ($item['menuId']         ?? 0);
-            $quantity = (int)   ($item['quantity']       ?? 0);
-            $price    = (float) ($item['pricePerPerson'] ?? 0);
-
-            if ($menuId <= 0 || $quantity <= 0) {
-                continue;
-            }
-
-            $menu = $menuRepository->find($menuId);
-            if (!$menu) {
-                $logger->warning('Menu introuvable lors de la modification de commande.', ['menuId' => $menuId]);
-                continue;
-            }
-
+        // Étape 2 : recréation des nouvelles lignes avec les prix recalculés côté serveur
+        foreach ($orderMenus as ['menu' => $menu, 'quantity' => $quantity, 'price' => $price]) {
             $orderMenu = new OrderMenu();
             $orderMenu->setOrder($order);
             $orderMenu->setMenu($menu);
             $orderMenu->setQuantity($quantity);
-            $orderMenu->setPricePerPerson((string) round($price, 2));
+            $orderMenu->setPricePerPerson((string) $price);
             $entityManager->persist($orderMenu);
         }
 
@@ -358,5 +339,66 @@ class OrderController extends AbstractController
         }
 
         return new JsonResponse(['success' => true]);
+    }
+
+    /**
+     * Calcule les totaux d'une commande côté serveur à partir des menuId et quantités.
+     *
+     * Le prix unitaire est systématiquement lu depuis la base de données (Menu::pricePerPerson),
+     * jamais depuis le payload client. Cela empêche un client de falsifier les prix.
+     *
+     * Logique de remise : si la quantité dépasse minPeople + 5, une remise de 10 % est appliquée
+     * (même règle que dans cartCalc.ts côté frontend, mais vérifiée ici côté serveur).
+     *
+     * @param array<int, array<string, mixed>> $items          Lignes du payload client [{menuId, quantity}, ...]
+     * @param MenuRepository                   $menuRepository Repository pour charger les menus depuis la BDD
+     * @param LoggerInterface                  $logger         Logger pour signaler les menus introuvables
+     * @return array{subtotal: float, orderMenus: list<array{menu: \App\Entity\Menu, quantity: int, price: float}>}
+     */
+    private function computeOrderTotals(
+        array $items,
+        MenuRepository $menuRepository,
+        LoggerInterface $logger
+    ): array {
+        $subtotal   = 0.0;
+        $orderMenus = [];
+
+        foreach ($items as $item) {
+            $menuId   = (int) ($item['menuId']   ?? 0);
+            $quantity = (int) ($item['quantity'] ?? 0);
+
+            if ($menuId <= 0 || $quantity <= 0) {
+                continue;
+            }
+
+            $menu = $menuRepository->find($menuId);
+            if (!$menu) {
+                $logger->warning('Menu introuvable lors du calcul de la commande.', ['menuId' => $menuId]);
+                continue;
+            }
+
+            // Prix unitaire lu depuis la BDD — le client ne peut pas l'influencer
+            $unitPrice = (float) $menu->getPricePerPerson();
+            $minPeople = $menu->getMinPeople();
+
+            // Application de la remise de 10 % si la quantité dépasse minPeople + 5
+            if ($quantity > $minPeople + 5) {
+                $unitPrice = round($unitPrice * 0.9, 2);
+            }
+
+            $lineTotal  = round($unitPrice * $quantity, 2);
+            $subtotal  += $lineTotal;
+
+            $orderMenus[] = [
+                'menu'     => $menu,
+                'quantity' => $quantity,
+                'price'    => $unitPrice,
+            ];
+        }
+
+        return [
+            'subtotal'   => round($subtotal, 2),
+            'orderMenus' => $orderMenus,
+        ];
     }
 }

@@ -144,7 +144,7 @@ class AuthController extends AbstractController
             $errors[] = 'postalCode';
         }
 
-        if (mb_strlen($password) < 12 || !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{12,}$/', $password)) {
+        if (mb_strlen($password) < 8 || !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/', $password)) {
             $errors[] = 'password';
         }
 
@@ -298,12 +298,12 @@ class AuthController extends AbstractController
 
         // Validation de la complexité du mot de passe (identique à l'inscription)
         if (
-            mb_strlen($newPassword) < 12
-            || !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{12,}$/', $newPassword)
+            mb_strlen($newPassword) < 8
+            || !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/', $newPassword)
         ) {
             return new JsonResponse([
                 'success' => false,
-                'message' => 'Le mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.',
+                'message' => 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.',
             ], 400);
         }
 
