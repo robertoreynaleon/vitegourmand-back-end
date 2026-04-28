@@ -117,10 +117,15 @@ class AuthController extends AbstractController
 
         $errors = [];
 
-        if (mb_strlen($name) < 2) {
+        // Regex : lettres (dont accents), espaces, tirets, apostrophes
+        $nameRegex = '/^[a-zA-Z\x{00C0}-\x{00FF}\s\-\']+$/u';
+        // Regex : adresse postale (lettres, chiffres, espaces, ponctuation courante)
+        $addressRegex = '/^[a-zA-Z\x{00C0}-\x{00FF}0-9\s\-\',.\/]+$/u';
+
+        if (mb_strlen($name) < 2 || !preg_match($nameRegex, $name)) {
             $errors[] = 'name';
         }
-        if (mb_strlen($lastname) < 2) {
+        if (mb_strlen($lastname) < 2 || !preg_match($nameRegex, $lastname)) {
             $errors[] = 'lastname';
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -132,11 +137,11 @@ class AuthController extends AbstractController
             $errors[] = 'phone';
         }
 
-        if (mb_strlen($address) < 5) {
+        if (mb_strlen($address) < 5 || !preg_match($addressRegex, $address)) {
             $errors[] = 'address';
         }
 
-        if (mb_strlen($city) < 2 || !preg_match('/^[a-zA-ZÀ-ÿ\s\-\']+$/', $city)) {
+        if (mb_strlen($city) < 2 || !preg_match('/^[a-zA-Z\x{00C0}-\x{00FF}\s\-\']+$/u', $city)) {
             $errors[] = 'city';
         }
 

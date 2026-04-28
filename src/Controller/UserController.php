@@ -99,12 +99,17 @@ class UserController extends AbstractController
 
         $errors = [];
 
-        if (mb_strlen($name) < 2) $errors[] = 'name';
-        if (mb_strlen($lastname) < 2) $errors[] = 'lastname';
+        // Regex : lettres (dont accents), espaces, tirets, apostrophes
+        $nameRegex = '/^[a-zA-Z\x{00C0}-\x{00FF}\s\-\']+$/u';
+        // Regex : adresse postale (lettres, chiffres, espaces, ponctuation courante)
+        $addressRegex = '/^[a-zA-Z\x{00C0}-\x{00FF}0-9\s\-\',.\/]+$/u';
+
+        if (mb_strlen($name) < 2 || !preg_match($nameRegex, $name)) $errors[] = 'name';
+        if (mb_strlen($lastname) < 2 || !preg_match($nameRegex, $lastname)) $errors[] = 'lastname';
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'email';
         if (!preg_match('/^0[1-9][0-9]{8}$/', $phone)) $errors[] = 'phone';
-        if (mb_strlen($address) < 5) $errors[] = 'address';
-        if (mb_strlen($city) < 2) $errors[] = 'city';
+        if (mb_strlen($address) < 5 || !preg_match($addressRegex, $address)) $errors[] = 'address';
+        if (mb_strlen($city) < 2 || !preg_match($nameRegex, $city)) $errors[] = 'city';
         if (!preg_match('/^[0-9]{5}$/', $postalCode)) $errors[] = 'postalCode';
 
         $changePassword = $newPassword !== '';
