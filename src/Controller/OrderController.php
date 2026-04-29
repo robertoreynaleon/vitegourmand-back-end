@@ -95,6 +95,23 @@ class OrderController extends AbstractController
 
         $totalAmount = round($subtotal + $rawDeliveryFee, 2);
 
+        // Vérification du stock disponible avant toute persistance
+        foreach ($orderMenus as ['menu' => $menu, 'quantity' => $quantity]) {
+            $available = $menu->getRemainingQuantity();
+            if ($available !== null && $available < $quantity) {
+                return new JsonResponse([
+                    'success'    => false,
+                    'stockError' => true,
+                    'message'    => sprintf(
+                        'Stock insuffisant pour le menu « %s » : %d place(s) disponible(s), %d demandée(s). Veuillez réduire la quantité ou choisir un autre menu.',
+                        $menu->getTitle(),
+                        $available,
+                        $quantity
+                    ),
+                ], 422);
+            }
+        }
+
         $order->setDeliveryDate($deliveryDate);
         $order->setDeliveryTime($deliveryTime);
         $order->setDeliveryAddress(strip_tags($deliveryAddress));
@@ -108,6 +125,11 @@ class OrderController extends AbstractController
         $entityManager->persist($order);
 
         foreach ($orderMenus as ['menu' => $menu, 'quantity' => $quantity, 'price' => $price]) {
+            // Décrémentation du stock
+            if ($menu->getRemainingQuantity() !== null) {
+                $menu->setRemainingQuantity($menu->getRemainingQuantity() - $quantity);
+            }
+
             $orderMenu = new OrderMenu();
             $orderMenu->setOrder($order);
             $orderMenu->setMenu($menu);
@@ -249,6 +271,35 @@ class OrderController extends AbstractController
 
         $totalAmount = round($subtotal + $rawDeliveryFee, 2);
 
+        // Vérification du stock disponible pour les nouvelles quantités.
+        // On tient compte du fait que l'ancienne réservation va être libérée :
+        // on calcule le stock effectif = remainingQuantity + ancienne quantité pour ce menu.
+        $oldQuantityByMenuId = [];
+        foreach ($order->getOrderMenus() as $existing) {
+            $oldQuantityByMenuId[$existing->getMenu()->getId()] =
+                ($oldQuantityByMenuId[$existing->getMenu()->getId()] ?? 0) + $existing->getQuantity();
+        }
+
+        foreach ($orderMenus as ['menu' => $menu, 'quantity' => $quantity]) {
+            $available = $menu->getRemainingQuantity();
+            if ($available !== null) {
+                $restored  = $oldQuantityByMenuId[$menu->getId()] ?? 0;
+                $effective = $available + $restored;
+                if ($effective < $quantity) {
+                    return new JsonResponse([
+                        'success'    => false,
+                        'stockError' => true,
+                        'message'    => sprintf(
+                            'Stock insuffisant pour le menu « %s » : %d place(s) disponible(s), %d demandée(s). Veuillez réduire la quantité ou choisir un autre menu.',
+                            $menu->getTitle(),
+                            $effective,
+                            $quantity
+                        ),
+                    ], 422);
+                }
+            }
+        }
+
         $order->setDeliveryDate($deliveryDate);
         $order->setDeliveryTime($deliveryTime);
         $order->setDeliveryAddress(strip_tags($deliveryAddress));
@@ -256,14 +307,24 @@ class OrderController extends AbstractController
         $order->setDeliveryFee((string) round($rawDeliveryFee, 2));
         $order->setTotalAmount((string) $totalAmount);
 
-        // Étape 1 : suppression des anciennes lignes de commande (OrderMenu)
+        // Étape 1 : restitution du stock des anciennes lignes + suppression
         foreach ($order->getOrderMenus() as $existing) {
+            $existingMenu = $existing->getMenu();
+            if ($existingMenu->getRemainingQuantity() !== null) {
+                $existingMenu->setRemainingQuantity(
+                    $existingMenu->getRemainingQuantity() + $existing->getQuantity()
+                );
+            }
             $entityManager->remove($existing);
         }
         $entityManager->flush();
 
-        // Étape 2 : recréation des nouvelles lignes avec les prix recalculés côté serveur
+        // Étape 2 : recréation des nouvelles lignes avec décrémentation du stock
         foreach ($orderMenus as ['menu' => $menu, 'quantity' => $quantity, 'price' => $price]) {
+            if ($menu->getRemainingQuantity() !== null) {
+                $menu->setRemainingQuantity($menu->getRemainingQuantity() - $quantity);
+            }
+
             $orderMenu = new OrderMenu();
             $orderMenu->setOrder($order);
             $orderMenu->setMenu($menu);
@@ -323,6 +384,14 @@ class OrderController extends AbstractController
 
         $orderId        = $order->getId();
         $orderDateFormatted = $order->getOrderDate()?->format('d/m/Y \à H:i') ?? '';
+
+        // Restitution du stock avant suppression (cascade supprime les orderMenus)
+        foreach ($order->getOrderMenus() as $orderMenu) {
+            $menu = $orderMenu->getMenu();
+            if ($menu->getRemainingQuantity() !== null) {
+                $menu->setRemainingQuantity($menu->getRemainingQuantity() + $orderMenu->getQuantity());
+            }
+        }
 
         try {
             $entityManager->remove($order);

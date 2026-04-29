@@ -174,6 +174,13 @@ class StaffController extends AbstractController
 
         // Résolution du statut enum
         if ($action === 'refuse') {
+            // Restitution du stock lors d'un refus
+            foreach ($order->getOrderMenus() as $orderMenu) {
+                $menu = $orderMenu->getMenu();
+                if ($menu->getRemainingQuantity() !== null) {
+                    $menu->setRemainingQuantity($menu->getRemainingQuantity() + $orderMenu->getQuantity());
+                }
+            }
             $newStatus = OrderStatus::Annulee;
         } else {
             $newStatus = $order->getStatus();
