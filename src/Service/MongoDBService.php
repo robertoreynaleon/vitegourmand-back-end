@@ -18,7 +18,7 @@ class MongoDBService
     private string $dbName;
 
     /** Collections MongoDB accessibles via ce service. */
-    private const ALLOWED = ['reviews', 'menu_stats', 'order_status_history', 'contact_messages'];
+    private const ALLOWED = ['reviews', 'menu_stats', 'contact_messages'];
 
     /**
      * Initialise la connexion MongoDB avec l'URL et le nom de base fournis

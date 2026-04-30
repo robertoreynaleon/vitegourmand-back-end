@@ -20,13 +20,13 @@ class MongoController extends AbstractController
      * GET /api/mongo/{collection}
      *
      * Retourne tous les documents d'une collection MongoDB publique.
-     * Collections autorisées : reviews, menu_stats, order_status_history.
+     * Collections autorisées : reviews, menu_stats.
      */
     #[Route('/api/mongo/{collection}', name: 'api_mongo_collection', methods: ['GET'])]
     public function getCollection(string $collection): JsonResponse
     {
         // Liste blanche des collections accessibles publiquement
-        $allowed = ['reviews', 'menu_stats', 'order_status_history'];
+        $allowed = ['reviews', 'menu_stats'];
         if (!in_array($collection, $allowed, true)) {
             return $this->json(['error' => 'Collection non autorisée.'], 400);
         }
