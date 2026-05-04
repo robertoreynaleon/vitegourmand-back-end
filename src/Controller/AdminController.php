@@ -100,7 +100,7 @@ class AdminController extends AbstractController
         $errors = [];
         if (mb_strlen($name) < 2)                             $errors[] = 'name';
         if (mb_strlen($lastname) < 2)                         $errors[] = 'lastname';
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))       $errors[] = 'email';
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !preg_match('/^[a-zA-Z0-9._+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/i', $email)) $errors[] = 'email';
         if (!preg_match('/^0[1-9][0-9]{8}$/', $phone))       $errors[] = 'phone';
         if (mb_strlen($address) < 5)                          $errors[] = 'address';
         if (mb_strlen($city) < 2)                             $errors[] = 'city';
