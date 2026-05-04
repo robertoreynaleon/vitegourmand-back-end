@@ -291,7 +291,8 @@ class AuthController extends AbstractController
         PasswordResetTokenRepository $tokenRepository,
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        MailService $mailService
     ): JsonResponse {
         $data        = json_decode($request->getContent(), true);
         $tokenValue  = trim((string) ($data['token'] ?? ''));
@@ -336,6 +337,12 @@ class AuthController extends AbstractController
         } catch (\Throwable $e) {
             $logger->error('Échec de la réinitialisation du mot de passe.', ['error' => $e->getMessage()]);
             return new JsonResponse(['success' => false, 'message' => 'Erreur interne.'], 500);
+        }
+
+        try {
+            $mailService->sendPasswordChanged($user);
+        } catch (\Throwable $e) {
+            $logger->warning('Mail password_changed non envoyé après réinitialisation.', ['error' => $e->getMessage()]);
         }
 
         return new JsonResponse([
