@@ -43,12 +43,12 @@ security:
         # ── Routes client uniquement (ROLE_CLIENT) ───────────────────────────
         # Les employés (ROLE_STAFF_MEMBER) et admins (ROLE_ADMIN) n'ont PAS
         # ROLE_CLIENT dans la hiérarchie : ils sont bloqués au niveau du pare-feu.
-        - { path: ^/api/orders/, roles: ROLE_CLIENT }
+        - { path: ^/api/orders, roles: ROLE_CLIENT }
         - { path: ^/api/user/, roles: ROLE_CLIENT }
         - { path: ^/api/reviews, roles: ROLE_CLIENT }
 
         # ── Entité OrderMenu (API Platform) ─────────────────────────────────
-        - { path: ^/api/order_menus/, roles: ROLE_CLIENT }
+        - { path: ^/api/order_menus, roles: ROLE_CLIENT }
 
         # ── Entité User (API Platform) — réservé à l'admin ──────────────────
         # Protège les endpoints auto-générés /api/users/* contre toute lecture publique.
