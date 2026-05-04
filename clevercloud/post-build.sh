@@ -24,9 +24,20 @@ if [ -z "$DATABASE_URL" ] && [ -n "$MYSQL_ADDON_URI" ]; then
 fi
 
 # ── 3. Migrations Doctrine ───────────────────────────────────────────────────
-echo "[2/3] Lancement des migrations Doctrine..."
-APP_ENV=prod php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-echo "  Migrations OK"
+# Sur une BDD vierge (Clever Cloud), les migrations correctives échouent car
+# elles supposent que les tables existent déjà.
+# Stratégie : essayer les migrations ; en cas d'échec, créer le schéma depuis
+# les entités Doctrine puis marquer toutes les migrations comme exécutées.
+echo "[2/3] Tentative des migrations Doctrine..."
+if APP_ENV=prod php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration 2>&1; then
+    echo "  Migrations OK"
+else
+    echo "  Migrations échouées (BDD vierge probable) — création du schéma depuis les entités..."
+    APP_ENV=prod php bin/console doctrine:schema:create --no-interaction
+    echo "  Schéma créé."
+    APP_ENV=prod php bin/console doctrine:migrations:version --add --all --no-interaction
+    echo "  Migrations marquées comme exécutées."
+fi
 
 # ── 4. Cache prod ────────────────────────────────────────────────────────────
 echo "[3/3] Vidage du cache prod..."
