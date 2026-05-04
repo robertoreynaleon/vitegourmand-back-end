@@ -16,7 +16,7 @@ use Symfony\Component\Mime\Address;
 class MailService
 {
     /** Adresse expéditrice commune à tous les e-mails. */
-    private const FROM_EMAIL = 'noreply@vitegourmand.fr';
+    private const FROM_EMAIL = 'robertoreynaleon@gmail.com';
 
     /** Nom affiché comme expéditeur dans la boîte mail du destinataire. */
     private const FROM_NAME  = 'Vite & Gourmand';
