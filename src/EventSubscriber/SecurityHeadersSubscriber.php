@@ -62,12 +62,25 @@ class SecurityHeadersSubscriber implements EventSubscriberInterface
             "script-src 'self'",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com",
-            "img-src 'self' data: blob: http://vitegourmand.local",
-            "connect-src 'self' http://vitegourmand.local http://localhost:3000",
+            "img-src 'self' data: blob:",
+            "connect-src 'self' https://app-9cc45e16-e981-413e-bfd3-5455bf559b1f.cleverapps.io http://localhost:8000 http://localhost:3000",
             "frame-ancestors 'none'",
             "form-action 'self'",
         ]);
 
         $response->headers->set('Content-Security-Policy', $csp);
+
+        // Garantie CORS : si NelmioCorsBundle a manqué l'origine (bug array_filter),
+        // on injecte le header manuellement pour les origines connues.
+        $origin = $event->getRequest()->headers->get('Origin');
+        $allowedOrigins = [
+            'https://vitegourmand-frontend.vercel.app',
+            'http://localhost:3000',
+            'http://127.0.0.1:3000',
+        ];
+        if ($origin !== null && in_array($origin, $allowedOrigins, true)) {
+            $response->headers->set('Access-Control-Allow-Origin', $origin);
+            $response->setVary('Origin', false);
+        }
     }
 }
