@@ -202,8 +202,8 @@ class MailService
      */
     public function sendPasswordReset(User $user, string $token): void
     {
-        // Lien renvoyant vers la page React de réinitialisation (frontend, port 3000)
-        $resetLink = 'http://localhost:3000/auth/reset-password?token=' . urlencode($token);
+        // Lien renvoyant vers la page React de réinitialisation (frontend Vercel)
+        $resetLink = 'https://vitegourmand-frontend.vercel.app/auth/reset-password?token=' . urlencode($token);
 
         $email = (new TemplatedEmail())
             ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))
