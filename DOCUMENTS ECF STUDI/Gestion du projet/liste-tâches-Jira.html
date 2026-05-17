@@ -1,0 +1,2401 @@
+<html
+        xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<title>Jira</title>
+<style type="text/css">
+table {
+    mso-displayed-decimal-separator:"\,";
+    mso-displayed-thousand-separator:" ";
+}
+body
+{
+    margin: 0px;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    color:black;
+}
+
+</style>
+<META HTTP-EQUIV="Content-Type" Content="application/vnd.ms-excel; charset=UTF-8">
+<!-- JRA-7598 - ensure fields (e.g. description) occupy only one cell - even fields containing newlines. -->
+<!--
+Vertical align all cells to the top, in order to align all issue rows of issuetable to the top,
+since Excel does not use or save the css files it is hardcoded here.
+-->
+<style>
+@page
+{
+mso-page-orientation:landscape;
+margin:.25in .25in .5in .25in;
+mso-header-margin:.5in;
+mso-footer-margin:.25in;
+mso-footer-data:"&R&P of &N";
+mso-horizontal-page-align:center;
+mso-vertical-page-align:center;
+}
+
+td.issuekey,
+td.issuetype,
+td.status {
+    mso-style-parent: "";
+    mso-number-format: \@;
+    text-align: left;
+}
+br
+{
+    mso-data-placement:same-cell;
+}
+
+td
+{
+    vertical-align: top;
+}
+</style>
+
+<!--[if gte mso 9]><xml>
+<x:ExcelWorkbook>
+<x:ExcelWorksheets>
+<x:ExcelWorksheet>
+<x:Name>general_report</x:Name>
+<x:WorksheetOptions>
+<x:Print>
+<x:ValidPrinterInfo/>
+</x:Print>
+</x:WorksheetOptions>
+</x:ExcelWorksheet>
+</x:ExcelWorksheets>
+</x:ExcelWorkbook>
+</xml><![endif]-->
+</head>
+<body>
+
+<table border="1">
+    <tr bgcolor="#205081" height="30">
+        <td colspan="10">
+            <img src="https://robertoreynaleon.atlassian.net/images/icon-jira-family-logo.png" width="57" height="30" border="0" alt="Jira">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="10">
+            <a href="https://robertoreynaleon.atlassian.net/issues/?jql=project+%3D+SVG+AND+type+in+%28Epic%2C+Sous-t%C3%A2che%2C+Task%29+ORDER+BY+created+DESC">Jira</a>
+        </td>
+    </tr>
+    <tr>
+                <td colspan="10">
+            Affichage de <strong>86</strong> ticket(s) à <strong>08/mai/26 1:51 PM</strong>.
+        </td>
+    </tr>
+</table>
+
+
+
+
+                                        <table id="issuetable" class="aui " border="1" cellpadding="3" cellspacing="1" width="100%">
+                        <thead>
+        <tr class="rowHeader">
+            
+                                                            <th class="colHeaderLink headerrow-issuetype" data-id="issuetype">
+                                                        Type de ticket
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-issuekey" data-id="issuekey">
+                                                        Clé
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-summary" data-id="summary">
+                                                        Résumé
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-assignee" data-id="assignee">
+                                                        Personne assignée
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-reporter" data-id="reporter">
+                                                        Rapporteur
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-status" data-id="status">
+                                                        État
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-resolution" data-id="resolution">
+                                                        Résolution
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-created" data-id="created">
+                                                        Création
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-updated" data-id="updated">
+                                                        Mise à jour
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-duedate" data-id="duedate">
+                                                        Date d&#39;échéance
+                                                    </th>
+                                                                    </tr>
+    </thead>
+    <tbody>
+                    
+
+                <tr id="issuerow10768" rel="10768" data-issuekey="SVG-86" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-86" href="https://robertoreynaleon.atlassian.net/browse/SVG-86">SVG-86</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 11.6 - Déployer le frontend React sur Vercel
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 30/avr./26 9:18 PM </td>
+                                            <td class="updated"> 08/mai/26 1:45 PM </td>
+                                            <td class="duedate">    10/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10766" rel="10766" data-issuekey="SVG-85" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-85" href="https://robertoreynaleon.atlassian.net/browse/SVG-85">SVG-85</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 11.5 - Configurer les emails transactionnels avec Brevo
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 30/avr./26 9:14 PM </td>
+                                            <td class="updated"> 08/mai/26 1:41 PM </td>
+                                            <td class="duedate">    10/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10764" rel="10764" data-issuekey="SVG-84" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-84" href="https://robertoreynaleon.atlassian.net/browse/SVG-84">SVG-84</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 11.4 - Configurer MongoDB Atlas pour les avis, stats et messages
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 30/avr./26 9:06 PM </td>
+                                            <td class="updated"> 08/mai/26 1:36 PM </td>
+                                            <td class="duedate">    10/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10762" rel="10762" data-issuekey="SVG-83" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-83" href="https://robertoreynaleon.atlassian.net/browse/SVG-83">SVG-83</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 11.3 - Déployer le backend Symfony sur Clever Cloud
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 30/avr./26 9:06 PM </td>
+                                            <td class="updated"> 08/mai/26 1:33 PM </td>
+                                            <td class="duedate">    10/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10760" rel="10760" data-issuekey="SVG-82" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-82" href="https://robertoreynaleon.atlassian.net/browse/SVG-82">SVG-82</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 11.2 - Créer et configurer la base de données MySQL sur Clever Cloud
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 30/avr./26 9:06 PM </td>
+                                            <td class="updated"> 08/mai/26 12:25 PM </td>
+                                            <td class="duedate">    10/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10726" rel="10726" data-issuekey="SVG-81" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-81" href="https://robertoreynaleon.atlassian.net/browse/SVG-81">SVG-81</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 11.1 - Préparer le code pour la mise en ligne
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 26/avr./26 9:33 PM </td>
+                                            <td class="updated"> 08/mai/26 12:22 PM </td>
+                                            <td class="duedate">    10/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10725" rel="10725" data-issuekey="SVG-80" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-80" href="https://robertoreynaleon.atlassian.net/browse/SVG-80">SVG-80</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 10.11 - Gestion du stock remaining_quantity lors du cycle de vie des commandes
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 26/avr./26 9:33 PM </td>
+                                            <td class="updated"> 30/avr./26 12:59 AM </td>
+                                            <td class="duedate">    30/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10724" rel="10724" data-issuekey="SVG-79" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-79" href="https://robertoreynaleon.atlassian.net/browse/SVG-79">SVG-79</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 10.10 - Validation stricte des champs du formulaire utilisateur
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 26/avr./26 9:33 PM </td>
+                                            <td class="updated"> 28/avr./26 3:18 PM </td>
+                                            <td class="duedate">    30/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10723" rel="10723" data-issuekey="SVG-78" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-78" href="https://robertoreynaleon.atlassian.net/browse/SVG-78">SVG-78</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 10.9 -  Améliorations Footer, Légales &amp; Sécurité
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 26/avr./26 9:32 PM </td>
+                                            <td class="updated"> 27/avr./26 12:41 AM </td>
+                                            <td class="duedate">    28/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10722" rel="10722" data-issuekey="SVG-77" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-77" href="https://robertoreynaleon.atlassian.net/browse/SVG-77">SVG-77</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 10.8 - Recalcul des prix côté serveur
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 26/avr./26 9:32 PM </td>
+                                            <td class="updated"> 26/avr./26 10:00 PM </td>
+                                            <td class="duedate">    28/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10721" rel="10721" data-issuekey="SVG-76" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-76" href="https://robertoreynaleon.atlassian.net/browse/SVG-76">SVG-76</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 10.7 - Validation frontend du mot de passe alignée sur le backend
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 26/avr./26 9:32 PM </td>
+                                            <td class="updated"> 26/avr./26 10:13 PM </td>
+                                            <td class="duedate">    28/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10687" rel="10687" data-issuekey="SVG-75" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-75" href="https://robertoreynaleon.atlassian.net/browse/SVG-75">SVG-75</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 10.6 -  Headers HTTP de sécurité + Content-Security-Policy
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 24/avr./26 8:40 PM </td>
+                                            <td class="updated"> 26/avr./26 10:05 PM </td>
+                                            <td class="duedate">    28/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10684" rel="10684" data-issuekey="SVG-74" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-74" href="https://robertoreynaleon.atlassian.net/browse/SVG-74">SVG-74</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 10.5 - Messages de connexion et déconnexion
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 24/avr./26 8:40 PM </td>
+                                            <td class="updated"> 26/avr./26 1:26 AM </td>
+                                            <td class="duedate">    28/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10681" rel="10681" data-issuekey="SVG-73" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-73" href="https://robertoreynaleon.atlassian.net/browse/SVG-73">SVG-73</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 10.4 - Endpoints
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 24/avr./26 8:40 PM </td>
+                                            <td class="updated"> 26/avr./26 12:36 AM </td>
+                                            <td class="duedate">    28/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10678" rel="10678" data-issuekey="SVG-72" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-72" href="https://robertoreynaleon.atlassian.net/browse/SVG-72">SVG-72</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 10.3 - Réinitialisation du mot de passe client
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 24/avr./26 8:39 PM </td>
+                                            <td class="updated"> 25/avr./26 1:40 PM </td>
+                                            <td class="duedate">    28/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10675" rel="10675" data-issuekey="SVG-71" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-71" href="https://robertoreynaleon.atlassian.net/browse/SVG-71">SVG-71</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 10.2 - Forcer le scroll en haut de la page (to top)
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 24/avr./26 8:39 PM </td>
+                                            <td class="updated"> 24/avr./26 10:05 PM </td>
+                                            <td class="duedate">    28/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10641" rel="10641" data-issuekey="SVG-70" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-70" href="https://robertoreynaleon.atlassian.net/browse/SVG-70">SVG-70</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-65</span>
+                Tâche 9.3.1 - Style interface Contact
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/avr./26 5:13 PM </td>
+                                            <td class="updated"> 24/avr./26 12:51 PM </td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10639" rel="10639" data-issuekey="SVG-69" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-69" href="https://robertoreynaleon.atlassian.net/browse/SVG-69">SVG-69</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-64</span>
+                Tâche 9.2.1 - Style page Stats
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/avr./26 4:21 PM </td>
+                                            <td class="updated"> 24/avr./26 1:10 AM </td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10637" rel="10637" data-issuekey="SVG-68" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-68" href="https://robertoreynaleon.atlassian.net/browse/SVG-68">SVG-68</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-63</span>
+                Tâche 9.1.2 - Style page UserCreate
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/avr./26 3:46 PM </td>
+                                            <td class="updated"> 23/avr./26 11:06 PM </td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10635" rel="10635" data-issuekey="SVG-67" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-67" href="https://robertoreynaleon.atlassian.net/browse/SVG-67">SVG-67</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-63</span>
+                Tâche 9.1.1 - Mail de confirmation du compte employé
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/avr./26 3:37 PM </td>
+                                            <td class="updated"> 23/avr./26 11:06 PM </td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10600" rel="10600" data-issuekey="SVG-66" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-66" href="https://robertoreynaleon.atlassian.net/browse/SVG-66">SVG-66</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 10.1 - Commentaires et effacement du code mort.
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 21/avr./26 5:04 PM </td>
+                                            <td class="updated"> 24/avr./26 9:35 PM </td>
+                                            <td class="duedate">    28/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10597" rel="10597" data-issuekey="SVG-65" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-65" href="https://robertoreynaleon.atlassian.net/browse/SVG-65">SVG-65</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 9.3 - Interface Contact
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 21/avr./26 5:04 PM </td>
+                                            <td class="updated"> 24/avr./26 12:51 PM </td>
+                                            <td class="duedate">    24/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10594" rel="10594" data-issuekey="SVG-64" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-64" href="https://robertoreynaleon.atlassian.net/browse/SVG-64">SVG-64</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 9.2 - Créer la page de statistiques
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 21/avr./26 5:03 PM </td>
+                                            <td class="updated"> 24/avr./26 1:10 AM </td>
+                                            <td class="duedate">    24/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10591" rel="10591" data-issuekey="SVG-63" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-63" href="https://robertoreynaleon.atlassian.net/browse/SVG-63">SVG-63</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 9.1 - Création d&#39;un compte employé côté admin
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 21/avr./26 5:03 PM </td>
+                                            <td class="updated"> 23/avr./26 11:07 PM </td>
+                                            <td class="duedate">    24/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10557" rel="10557" data-issuekey="SVG-62" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-62" href="https://robertoreynaleon.atlassian.net/browse/SVG-62">SVG-62</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-61</span>
+                Tâche 8.12.1 - Style page staff/ReviewsManage.jsx
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 12/avr./26 8:51 PM </td>
+                                            <td class="updated"> 24/avr./26 1:04 PM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10554" rel="10554" data-issuekey="SVG-61" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-61" href="https://robertoreynaleon.atlassian.net/browse/SVG-61">SVG-61</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.12 - Gestion des avis côté staff
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 12/avr./26 8:44 PM </td>
+                                            <td class="updated"> 21/avr./26 4:16 PM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10552" rel="10552" data-issuekey="SVG-60" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-60" href="https://robertoreynaleon.atlassian.net/browse/SVG-60">SVG-60</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-59</span>
+                Tâche 6.9.1 - Style page user/Reviews.jsx
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 12/avr./26 8:41 PM </td>
+                                            <td class="updated"> 24/avr./26 1:04 PM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10549" rel="10549" data-issuekey="SVG-59" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-59" href="https://robertoreynaleon.atlassian.net/browse/SVG-59">SVG-59</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 6.9 - Page pour lister les commentaires des clients
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 12/avr./26 8:28 PM </td>
+                                            <td class="updated"> 18/avr./26 12:09 AM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10515" rel="10515" data-issuekey="SVG-58" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-58" href="https://robertoreynaleon.atlassian.net/browse/SVG-58">SVG-58</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-54</span>
+                Tâche 6.8.1 - Style page user/ReviewCreate.jsx
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 12/avr./26 9:44 AM </td>
+                                            <td class="updated"> 24/avr./26 1:03 PM </td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10481" rel="10481" data-issuekey="SVG-57" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-57" href="https://robertoreynaleon.atlassian.net/browse/SVG-57">SVG-57</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-53</span>
+                Tâche 8.11.1 - Style page MenuEdit
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 11/avr./26 2:11 PM </td>
+                                            <td class="updated"> 24/avr./26 1:02 PM </td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10479" rel="10479" data-issuekey="SVG-56" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-56" href="https://robertoreynaleon.atlassian.net/browse/SVG-56">SVG-56</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-52</span>
+                Tâche 8.10.2 - Fonctionnalité pour les photos ajoutées
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 11/avr./26 1:26 PM </td>
+                                            <td class="updated"> 24/avr./26 1:01 PM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10477" rel="10477" data-issuekey="SVG-55" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-55" href="https://robertoreynaleon.atlassian.net/browse/SVG-55">SVG-55</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-52</span>
+                Tâche 8.10.1 - Style page MenuCreate
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 11/avr./26 1:23 PM </td>
+                                            <td class="updated"> 24/avr./26 1:01 PM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10443" rel="10443" data-issuekey="SVG-54" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-54" href="https://robertoreynaleon.atlassian.net/browse/SVG-54">SVG-54</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 6.8 - Page de commentaires pour les clients
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 07/avr./26 3:59 PM </td>
+                                            <td class="updated"> 18/avr./26 12:08 AM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10442" rel="10442" data-issuekey="SVG-53" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-53" href="https://robertoreynaleon.atlassian.net/browse/SVG-53">SVG-53</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.11 - Création de la page pour modifier un menu existant
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 07/avr./26 3:59 PM </td>
+                                            <td class="updated"> 12/avr./26 12:31 AM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10441" rel="10441" data-issuekey="SVG-52" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-52" href="https://robertoreynaleon.atlassian.net/browse/SVG-52">SVG-52</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.10 - Création de la page pour créer un nouveau menu
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 07/avr./26 3:58 PM </td>
+                                            <td class="updated"> 12/avr./26 12:31 AM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10440" rel="10440" data-issuekey="SVG-51" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-51" href="https://robertoreynaleon.atlassian.net/browse/SVG-51">SVG-51</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.9 - Style page CatalogManagement
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 07/avr./26 3:56 PM </td>
+                                            <td class="updated"> 11/avr./26 11:36 AM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10439" rel="10439" data-issuekey="SVG-50" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-50" href="https://robertoreynaleon.atlassian.net/browse/SVG-50">SVG-50</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.8 - Gestion du catalogue
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 07/avr./26 3:56 PM </td>
+                                            <td class="updated"> 11/avr./26 11:36 AM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10438" rel="10438" data-issuekey="SVG-49" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-49" href="https://robertoreynaleon.atlassian.net/browse/SVG-49">SVG-49</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.7 - Style de la page de traitement des commandes
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 07/avr./26 3:54 PM </td>
+                                            <td class="updated"> 24/avr./26 1:00 PM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10437" rel="10437" data-issuekey="SVG-48" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-48" href="https://robertoreynaleon.atlassian.net/browse/SVG-48">SVG-48</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.6 - Traitement d&#39;une commande (ORDER)
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 07/avr./26 3:53 PM </td>
+                                            <td class="updated"> 08/avr./26 5:18 PM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10404" rel="10404" data-issuekey="SVG-47" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-47" href="https://robertoreynaleon.atlassian.net/browse/SVG-47">SVG-47</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.5 - Style page staff/OrderList.jsx
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 06/avr./26 8:51 PM </td>
+                                            <td class="updated"> 24/avr./26 1:00 PM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10402" rel="10402" data-issuekey="SVG-46" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-46" href="https://robertoreynaleon.atlassian.net/browse/SVG-46">SVG-46</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.4 - Page de gestion des commandes
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 06/avr./26 6:35 PM </td>
+                                            <td class="updated"> 07/avr./26 12:28 AM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10399" rel="10399" data-issuekey="SVG-45" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-45" href="https://robertoreynaleon.atlassian.net/browse/SVG-45">SVG-45</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.3 - Searchbar commandes STAFF
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 06/avr./26 6:35 PM </td>
+                                            <td class="updated"> 07/avr./26 12:28 AM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10396" rel="10396" data-issuekey="SVG-44" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-44" href="https://robertoreynaleon.atlassian.net/browse/SVG-44">SVG-44</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.2 - Style dashboard staff
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 06/avr./26 6:34 PM </td>
+                                            <td class="updated"> 24/avr./26 1:00 PM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10393" rel="10393" data-issuekey="SVG-43" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-43" href="https://robertoreynaleon.atlassian.net/browse/SVG-43">SVG-43</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 8.1 - Développement du dashboard staff
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 06/avr./26 6:34 PM </td>
+                                            <td class="updated"> 07/avr./26 12:28 AM </td>
+                                            <td class="duedate">    13/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10359" rel="10359" data-issuekey="SVG-42" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-42" href="https://robertoreynaleon.atlassian.net/browse/SVG-42">SVG-42</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-35</span>
+                Tâche 7.4.2 - Mail de confirmation de la commande
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/avr./26 3:01 PM </td>
+                                            <td class="updated"> 24/avr./26 12:57 PM </td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10356" rel="10356" data-issuekey="SVG-41" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-41" href="https://robertoreynaleon.atlassian.net/browse/SVG-41">SVG-41</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 7.7 - Style du fichier OrderEdit
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/avr./26 2:06 PM </td>
+                                            <td class="updated"> 05/avr./26 9:07 PM </td>
+                                            <td class="duedate">    08/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10353" rel="10353" data-issuekey="SVG-40" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-40" href="https://robertoreynaleon.atlassian.net/browse/SVG-40">SVG-40</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 7.6 - Modification d&#39;une commande (ORDER)
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/avr./26 2:06 PM </td>
+                                            <td class="updated"> 05/avr./26 9:06 PM </td>
+                                            <td class="duedate">    08/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10351" rel="10351" data-issuekey="SVG-39" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-39" href="https://robertoreynaleon.atlassian.net/browse/SVG-39">SVG-39</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-35</span>
+                Tâche 7.4.1 - Création du bouton Mon Panier
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/avr./26 1:12 PM </td>
+                                            <td class="updated"> 24/avr./26 12:57 PM </td>
+                                            <td class="duedate">    06/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10317" rel="10317" data-issuekey="SVG-38" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-38" href="https://robertoreynaleon.atlassian.net/browse/SVG-38">SVG-38</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-34</span>
+                Tâche 7.3.2 - Créer un TimePicker pour l’heure de livrasion.
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 04/avr./26 4:25 PM </td>
+                                            <td class="updated"> 24/avr./26 12:59 PM </td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10315" rel="10315" data-issuekey="SVG-37" class="issuerow">
+                                            <td class="issuetype">    Sous-tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-37" href="https://robertoreynaleon.atlassian.net/browse/SVG-37">SVG-37</a>
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">SVG-34</span>
+                Tâche 7.3.1 - Créer un DatePicker pour le calendrier de la date livraison.
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 04/avr./26 4:22 PM </td>
+                                            <td class="updated"> 24/avr./26 12:59 PM </td>
+                                            <td class="duedate">    06/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10280" rel="10280" data-issuekey="SVG-36" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-36" href="https://robertoreynaleon.atlassian.net/browse/SVG-36">SVG-36</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 7.5 - Style page Orders
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 31/mars/26 4:32 PM </td>
+                                            <td class="updated"> 05/avr./26 4:37 PM </td>
+                                            <td class="duedate">    06/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10277" rel="10277" data-issuekey="SVG-35" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-35" href="https://robertoreynaleon.atlassian.net/browse/SVG-35">SVG-35</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 7.4 - Enregistrement d&#39;une commande (ORDER)
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 31/mars/26 4:31 PM </td>
+                                            <td class="updated"> 05/avr./26 4:37 PM </td>
+                                            <td class="duedate">    06/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10274" rel="10274" data-issuekey="SVG-34" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-34" href="https://robertoreynaleon.atlassian.net/browse/SVG-34">SVG-34</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 7.3 - Style du panier client
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 31/mars/26 4:30 PM </td>
+                                            <td class="updated"> 24/avr./26 12:54 PM </td>
+                                            <td class="duedate">    06/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10272" rel="10272" data-issuekey="SVG-33" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-33" href="https://robertoreynaleon.atlassian.net/browse/SVG-33">SVG-33</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 7.2 - Frais de livraison et réduction du 10% en TS
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 31/mars/26 4:29 PM </td>
+                                            <td class="updated"> 04/avr./26 4:53 PM </td>
+                                            <td class="duedate">    06/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10270" rel="10270" data-issuekey="SVG-32" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-32" href="https://robertoreynaleon.atlassian.net/browse/SVG-32">SVG-32</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 7.1 - Développement Mon Panier
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 31/mars/26 4:23 PM </td>
+                                            <td class="updated"> 04/avr./26 4:53 PM </td>
+                                            <td class="duedate">    06/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10235" rel="10235" data-issuekey="SVG-31" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-31" href="https://robertoreynaleon.atlassian.net/browse/SVG-31">SVG-31</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 6.7 – Suppression du compte utilisateur
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/mars/26 5:04 PM </td>
+                                            <td class="updated"> 02/avr./26 11:04 AM </td>
+                                            <td class="duedate">    03/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10232" rel="10232" data-issuekey="SVG-30" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-30" href="https://robertoreynaleon.atlassian.net/browse/SVG-30">SVG-30</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 6.6 – Dashboard utilisateur
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/mars/26 5:03 PM </td>
+                                            <td class="updated"> 02/avr./26 9:57 AM </td>
+                                            <td class="duedate">    03/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10229" rel="10229" data-issuekey="SVG-29" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-29" href="https://robertoreynaleon.atlassian.net/browse/SVG-29">SVG-29</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 6.5  – Système d&#39;emails ViteGourmand
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/mars/26 5:01 PM </td>
+                                            <td class="updated"> 30/mars/26 8:30 PM </td>
+                                            <td class="duedate">    01/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10226" rel="10226" data-issuekey="SVG-28" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-28" href="https://robertoreynaleon.atlassian.net/browse/SVG-28">SVG-28</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 6.4 - Login et première session
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/mars/26 4:50 PM </td>
+                                            <td class="updated"> 24/avr./26 12:54 PM </td>
+                                            <td class="duedate">    01/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10223" rel="10223" data-issuekey="SVG-27" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-27" href="https://robertoreynaleon.atlassian.net/browse/SVG-27">SVG-27</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 6.3 – Validation de données du formulaire
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/mars/26 4:49 PM </td>
+                                            <td class="updated"> 29/mars/26 8:51 PM </td>
+                                            <td class="duedate">    01/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10221" rel="10221" data-issuekey="SVG-26" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-26" href="https://robertoreynaleon.atlassian.net/browse/SVG-26">SVG-26</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 6.2 – Maquettage page d&#39;enregistrement
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/mars/26 4:47 PM </td>
+                                            <td class="updated"> 29/mars/26 4:51 PM </td>
+                                            <td class="duedate">    01/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10220" rel="10220" data-issuekey="SVG-25" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-25" href="https://robertoreynaleon.atlassian.net/browse/SVG-25">SVG-25</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 6.1 – Maquettage page de connexion
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/mars/26 4:41 PM </td>
+                                            <td class="updated"> 29/mars/26 3:58 PM </td>
+                                            <td class="duedate">    01/avr./26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10218" rel="10218" data-issuekey="SVG-24" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-24" href="https://robertoreynaleon.atlassian.net/browse/SVG-24">SVG-24</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 5.5 - Style pages des menus détaillées
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/mars/26 4:38 PM </td>
+                                            <td class="updated"> 24/avr./26 12:54 PM </td>
+                                            <td class="duedate">    30/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10216" rel="10216" data-issuekey="SVG-23" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-23" href="https://robertoreynaleon.atlassian.net/browse/SVG-23">SVG-23</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 5.4 - Gestion des images des menus
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/mars/26 4:24 PM </td>
+                                            <td class="updated"> 24/avr./26 12:54 PM </td>
+                                            <td class="duedate">    30/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10214" rel="10214" data-issuekey="SVG-22" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-22" href="https://robertoreynaleon.atlassian.net/browse/SVG-22">SVG-22</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 5.3 – Maquettage de la fiche détail menu
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/mars/26 4:11 PM </td>
+                                            <td class="updated"> 27/mars/26 4:44 PM </td>
+                                            <td class="duedate">    30/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10211" rel="10211" data-issuekey="SVG-21" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-21" href="https://robertoreynaleon.atlassian.net/browse/SVG-21">SVG-21</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 5.2 – Maquettage des filtres de recherche
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 23/mars/26 4:10 PM </td>
+                                            <td class="updated"> 27/mars/26 12:21 AM </td>
+                                            <td class="duedate">    27/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10176" rel="10176" data-issuekey="SVG-20" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-20" href="https://robertoreynaleon.atlassian.net/browse/SVG-20">SVG-20</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 5.1 – Maquettage de la vue globale des menus
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 09/mars/26 4:14 PM </td>
+                                            <td class="updated"> 25/mars/26 4:52 PM </td>
+                                            <td class="duedate">    26/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10173" rel="10173" data-issuekey="SVG-19" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-19" href="https://robertoreynaleon.atlassian.net/browse/SVG-19">SVG-19</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 4.3 - Design responsive et conformité RGAA
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 09/mars/26 4:06 PM </td>
+                                            <td class="updated"> 24/avr./26 12:53 PM </td>
+                                            <td class="duedate">    16/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10171" rel="10171" data-issuekey="SVG-18" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-18" href="https://robertoreynaleon.atlassian.net/browse/SVG-18">SVG-18</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 4.2 - Maquettage et intégration de la page d’accueil
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 09/mars/26 3:55 PM </td>
+                                            <td class="updated"> 24/avr./26 12:53 PM </td>
+                                            <td class="duedate">    16/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10169" rel="10169" data-issuekey="SVG-17" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-17" href="https://robertoreynaleon.atlassian.net/browse/SVG-17">SVG-17</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 4.1 - Création et testing de la page accueil de l&#39;app
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 09/mars/26 3:34 PM </td>
+                                            <td class="updated"> 24/avr./26 12:52 PM </td>
+                                            <td class="duedate">    12/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10135" rel="10135" data-issuekey="SVG-16" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-16" href="https://robertoreynaleon.atlassian.net/browse/SVG-16">SVG-16</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 2.3 - Initialiser le dépôt Git et configurer le projet sur GitHub
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 3:24 PM </td>
+                                            <td class="updated"> 24/avr./26 12:54 PM </td>
+                                            <td class="duedate">    12/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10134" rel="10134" data-issuekey="SVG-15" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-15" href="https://robertoreynaleon.atlassian.net/browse/SVG-15">SVG-15</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 2.1 - Installer et configurer les outils de développement
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 3:18 PM </td>
+                                            <td class="updated"> 24/avr./26 12:54 PM </td>
+                                            <td class="duedate">    12/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10133" rel="10133" data-issuekey="SVG-14" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-14" href="https://robertoreynaleon.atlassian.net/browse/SVG-14">SVG-14</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 2.2 - Configuration du projet en local avec WAMP
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 3:03 PM </td>
+                                            <td class="updated"> 24/avr./26 12:54 PM </td>
+                                            <td class="duedate">    12/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10132" rel="10132" data-issuekey="SVG-13" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-13" href="https://robertoreynaleon.atlassian.net/browse/SVG-13">SVG-13</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 3.1 - Créer la base de données relationnelle (MySQL) et NoSQL (MongoDB).
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 2:50 PM </td>
+                                            <td class="updated"> 24/avr./26 12:54 PM </td>
+                                            <td class="duedate">    12/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10131" rel="10131" data-issuekey="SVG-12" class="issuerow">
+                                            <td class="issuetype">    Tâche
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-12" href="https://robertoreynaleon.atlassian.net/browse/SVG-12">SVG-12</a>
+</td>
+                                            <td class="summary"><p>
+                Tâche 1.1 - Conception des modèles de données et création des bases relationnelle et NoSQL.
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 2:25 PM </td>
+                                            <td class="updated"> 24/avr./26 12:54 PM </td>
+                                            <td class="duedate">    12/mars/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10130" rel="10130" data-issuekey="SVG-11" class="issuerow">
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-11" href="https://robertoreynaleon.atlassian.net/browse/SVG-11">SVG-11</a>
+</td>
+                                            <td class="summary"><p>
+                Epic 11 : Déploiement
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-blue-gray jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;À faire&lt;/span&gt;">À faire</span>    </td>
+                                            <td class="resolution">    <em>Non résolu</em>
+</td>
+                                            <td class="created"> 05/mars/26 1:39 PM </td>
+                                            <td class="updated"> 24/avr./26 12:37 PM </td>
+                                            <td class="duedate">    20/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10129" rel="10129" data-issuekey="SVG-10" class="issuerow">
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-10" href="https://robertoreynaleon.atlassian.net/browse/SVG-10">SVG-10</a>
+</td>
+                                            <td class="summary"><p>
+                Epic 10 : Débogage et ajustemens
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-blue-gray jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;À faire&lt;/span&gt;">À faire</span>    </td>
+                                            <td class="resolution">    <em>Non résolu</em>
+</td>
+                                            <td class="created"> 05/mars/26 12:23 PM </td>
+                                            <td class="updated"> 24/avr./26 12:37 PM </td>
+                                            <td class="duedate">    20/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10128" rel="10128" data-issuekey="SVG-9" class="issuerow">
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-9" href="https://robertoreynaleon.atlassian.net/browse/SVG-9">SVG-9</a>
+</td>
+                                            <td class="summary"><p>
+                Epic 9 : Développement de la gestion des administrateurs
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 12:22 PM </td>
+                                            <td class="updated"> 24/avr./26 1:09 PM </td>
+                                            <td class="duedate">    20/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10127" rel="10127" data-issuekey="SVG-8" class="issuerow">
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-8" href="https://robertoreynaleon.atlassian.net/browse/SVG-8">SVG-8</a>
+</td>
+                                            <td class="summary"><p>
+                Epic 8 : Développement de la gestion des employés
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 12:21 PM </td>
+                                            <td class="updated"> 24/avr./26 1:09 PM </td>
+                                            <td class="duedate">    20/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10126" rel="10126" data-issuekey="SVG-7" class="issuerow">
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-7" href="https://robertoreynaleon.atlassian.net/browse/SVG-7">SVG-7</a>
+</td>
+                                            <td class="summary"><p>
+                Epic 7 : Développement de la gestion des commandes
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 12:14 PM </td>
+                                            <td class="updated"> 24/avr./26 1:09 PM </td>
+                                            <td class="duedate">    20/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10125" rel="10125" data-issuekey="SVG-6" class="issuerow">
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-6" href="https://robertoreynaleon.atlassian.net/browse/SVG-6">SVG-6</a>
+</td>
+                                            <td class="summary"><p>
+                Epic 6 : Développement de la gestion des utilisateurs
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 12:13 PM </td>
+                                            <td class="updated"> 24/avr./26 1:09 PM </td>
+                                            <td class="duedate">    20/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10124" rel="10124" data-issuekey="SVG-5" class="issuerow">
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-5" href="https://robertoreynaleon.atlassian.net/browse/SVG-5">SVG-5</a>
+</td>
+                                            <td class="summary"><p>
+                Epic 5 : Développement de la gestion des menus
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 12:13 PM </td>
+                                            <td class="updated"> 24/avr./26 1:09 PM </td>
+                                            <td class="duedate">    20/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10123" rel="10123" data-issuekey="SVG-4" class="issuerow">
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-4" href="https://robertoreynaleon.atlassian.net/browse/SVG-4">SVG-4</a>
+</td>
+                                            <td class="summary"><p>
+                Epic 4 : Développement de la page d&#39;accueil
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 12:08 PM </td>
+                                            <td class="updated"> 24/avr./26 1:09 PM </td>
+                                            <td class="duedate">    20/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10122" rel="10122" data-issuekey="SVG-3" class="issuerow">
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-3" href="https://robertoreynaleon.atlassian.net/browse/SVG-3">SVG-3</a>
+</td>
+                                            <td class="summary"><p>
+                Epic 3 : Connexion aux bases de données
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 12:07 PM </td>
+                                            <td class="updated"> 24/avr./26 1:09 PM </td>
+                                            <td class="duedate">    20/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10121" rel="10121" data-issuekey="SVG-2" class="issuerow">
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-2" href="https://robertoreynaleon.atlassian.net/browse/SVG-2">SVG-2</a>
+</td>
+                                            <td class="summary"><p>
+                Epic 2 : Configuration de l&#39;environnement de développement
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 12:05 PM </td>
+                                            <td class="updated"> 24/avr./26 1:08 PM </td>
+                                            <td class="duedate">    20/mai/26
+</td>
+                    </tr>
+
+
+                <tr id="issuerow10120" rel="10120" data-issuekey="SVG-1" class="issuerow">
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="SVG-1" href="https://robertoreynaleon.atlassian.net/browse/SVG-1">SVG-1</a>
+</td>
+                                            <td class="summary"><p>
+                Epic 1 : Conception et création des bases de données
+    </p>
+</td>
+                                            <td class="assignee">            Roberto Reyna Leon
+    </td>
+                                            <td class="reporter">            Roberto Reyna Leon
+    </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Terminé(e)&lt;/span&gt;">Terminé(e)</span>    </td>
+                                            <td class="resolution">    Terminé
+</td>
+                                            <td class="created"> 05/mars/26 12:04 PM </td>
+                                            <td class="updated"> 24/avr./26 1:08 PM </td>
+                                            <td class="duedate">    20/mai/26
+</td>
+                    </tr>
+        </tbody>
+    </table>
+    <div class="end-of-stable-message"></div>
+            <table border="1" >
+<tr>
+    <td bgcolor="#dddddd" colspan="10"><font size="1">
+        Généré à Fri May 08 11:51:21 UTC 2026 par Roberto Reyna Leon avec JIRA 1001.0.0-SNAPSHOT#100291-rev:1d7cacde39f9951e7533b7cb65e511f111bee90b.
+    </font></td>
+</tr>
+</table>
+
+</body>
+</html>
