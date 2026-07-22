@@ -9,6 +9,7 @@
 parameters:
     mongodb_url:      '%env(MONGODB_URL)%'
     mongodb_database: '%env(MONGODB_DATABASE)%'
+    frontend_url:     '%env(FRONTEND_URL)%'
 
 services:
     # default configuration for services in *this* file
@@ -25,6 +26,10 @@ services:
         arguments:
             $mongodbUrl:      '%mongodb_url%'
             $mongodbDatabase: '%mongodb_database%'
+
+    App\Service\MailService:
+        arguments:
+            $frontendUrl: '%frontend_url%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -21,7 +21,10 @@ class MailService
     /** Nom affiché comme expéditeur dans la boîte mail du destinataire. */
     private const FROM_NAME  = 'Vite & Gourmand';
 
-    public function __construct(private readonly MailerInterface $mailer) {}
+    public function __construct(
+        private readonly MailerInterface $mailer,
+        private readonly string $frontendUrl,
+    ) {}
 
     /**
      * Envoie l'e-mail de bienvenue après la création d'un compte client.
@@ -202,8 +205,8 @@ class MailService
      */
     public function sendPasswordReset(User $user, string $token): void
     {
-        // Lien renvoyant vers la page React de réinitialisation (frontend Vercel)
-        $resetLink = 'https://vitegourmand-frontend.vercel.app/auth/reset-password?token=' . urlencode($token);
+        // Lien renvoyant vers la page React de l'environnement courant.
+        $resetLink = rtrim($this->frontendUrl, '/') . '/auth/reset-password?token=' . urlencode($token);
 
         $email = (new TemplatedEmail())
             ->from(new Address(self::FROM_EMAIL, self::FROM_NAME))

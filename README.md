@@ -3,6 +3,52 @@ README — Vite & Gourmand
 → L'application est déjà déployée et accessible en ligne : https://vitegourmand-frontend.vercel.app/ ←
 
 
+· INSTALLATION DU BACKEND AVEC DOCKER SOUS WSL2
+
+Cette configuration lance Symfony avec Apache, MySQL 8, MongoDB 6 et Mailpit.
+PHP, Composer et les extensions PHP ne doivent pas être installés directement dans WSL.
+
+Prérequis : Docker Engine et le plugin Docker Compose doivent fonctionner dans WSL2.
+Le frontend Docker doit être accessible sur `http://localhost:3000`.
+
+Depuis le dossier `vitegourmand-back-end`, construire et démarrer les services :
+
+```
+docker compose up --build -d
+```
+
+Les services accessibles depuis le navigateur sont :
+
+```
+Backend Symfony : http://localhost:8000
+API des menus   : http://localhost:8000/api/menus
+Mailpit         : http://localhost:8025
+```
+
+MySQL et MongoDB restent accessibles uniquement entre les conteneurs.
+Le dump `vitegourmand_data.sql` est importé automatiquement lors du premier démarrage.
+
+Commandes utiles :
+
+```
+# Afficher l'état des services
+docker compose ps
+
+# Afficher les logs du backend
+docker compose logs -f backend
+
+# Exécuter une commande Symfony
+docker compose exec backend php bin/console about
+
+# Arrêter les services sans supprimer les données
+docker compose down
+```
+
+Les données MySQL, MongoDB, les clés JWT, le cache Symfony et les dépendances Composer
+sont conservés dans des volumes Docker. La suppression des volumes réinitialise les bases
+et provoque un nouvel import du dump SQL au prochain démarrage.
+
+
 · INSTALLATION EN LOCAL
 
 Ce guide explique comment faire tourner l’application en local sur Windows.

@@ -1,0 +1,17 @@
+# Dépendances et fichiers générés localement.
+node_modules
+vendor
+var
+config/jwt
+
+# Historique Git et fichiers propres aux outils locaux.
+.git
+.gitignore
+.DS_Store
+.env.local
+.env.*.local
+npm-debug.log*
+
+# Fichiers inutiles pendant la construction de l'image PHP.
+DOCUMENTATION APP
+vitegourmand_data.sql

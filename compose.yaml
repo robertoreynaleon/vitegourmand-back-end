@@ -1,0 +1,83 @@
+name: vitegourmand-backend-local
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        LOCAL_UID: "${VG_UID:-1000}"
+        LOCAL_GID: "${VG_GID:-1000}"
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: 1
+      APP_SECRET: docker_local_secret_change_this_value
+      DEFAULT_URI: http://localhost:8000
+      DATABASE_URL: "mysql://vitegourmand:local_dev_password@database:3306/vitegourmand?serverVersion=8.0&charset=utf8mb4"
+      MONGODB_URL: mongodb://mongodb:27017
+      MONGODB_DATABASE: vitegourmand
+      CORS_ALLOW_ORIGIN: "^https?://(localhost|127\\.0\\.0\\.1)(:[0-9]+)?$"
+      JWT_SECRET_KEY: "%kernel.project_dir%/config/jwt/private.pem"
+      JWT_PUBLIC_KEY: "%kernel.project_dir%/config/jwt/public.pem"
+      JWT_PASSPHRASE: docker_local_jwt_passphrase
+      MAILER_DSN: smtp://mailer:1025
+      FRONTEND_URL: http://localhost:3000
+    ports:
+      - "${VG_BACKEND_PORT:-8000}:80"
+    depends_on:
+      database:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      mailer:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "php -r '$$socket = @fsockopen(\"127.0.0.1\", 80); if (!$$socket) { exit(1); } fclose($$socket);'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: vitegourmand
+      MYSQL_USER: vitegourmand
+      MYSQL_PASSWORD: local_dev_password
+      MYSQL_ROOT_PASSWORD: local_root_password
+    volumes:
+      # Le dump est importé uniquement lors de la création initiale du volume.
+      - ./vitegourmand_data.sql:/docker-entrypoint-initdb.d/01-vitegourmand.sql:ro
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  mongodb:
+    image: mongo:6.0
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  mailer:
+    image: axllent/mailpit:latest
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    ports:
+      - "${VG_MAILPIT_PORT:-8025}:8025"
+
+volumes:
+  backend_jwt:
+  backend_var:
+  backend_vendor:
+  mongodb_data:
+  mysql_data:

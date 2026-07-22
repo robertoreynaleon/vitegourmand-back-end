@@ -1,12 +1,10 @@
 
 services:
-###> symfony/mailer ###
-  mailer:
-    image: axllent/mailpit
-    ports:
-      - "1025"
-      - "8025"
-    environment:
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
-###< symfony/mailer ###
+  backend:
+    volumes:
+      # Le code reste éditable depuis WSL pendant le développement.
+      - .:/var/www/html
+      # Les fichiers générés par Linux restent isolés dans Docker.
+      - backend_vendor:/var/www/html/vendor
+      - backend_var:/var/www/html/var
+      - backend_jwt:/var/www/html/config/jwt
