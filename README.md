@@ -23,10 +23,28 @@ Les services accessibles depuis le navigateur sont :
 Backend Symfony : http://localhost:8000
 API des menus   : http://localhost:8000/api/menus
 Mailpit         : http://localhost:8025
+phpMyAdmin      : http://localhost:8090
 ```
 
-MySQL et MongoDB restent accessibles uniquement entre les conteneurs.
+MySQL reste accessible uniquement entre les conteneurs et peut être administré avec
+phpMyAdmin. MongoDB est également publié sur `localhost:27018` pour permettre une
+connexion depuis MongoDB Compass installé sur le poste Windows.
 Le dump `vitegourmand_data.sql` est importé automatiquement lors du premier démarrage.
+
+Connexion phpMyAdmin :
+
+```
+Serveur         : database
+Utilisateur     : vitegourmand
+Mot de passe    : local_dev_password
+Base de données : vitegourmand
+```
+
+Connexion MongoDB Compass :
+
+```
+mongodb://localhost:27018/vitegourmand
+```
 
 Commandes utiles :
 

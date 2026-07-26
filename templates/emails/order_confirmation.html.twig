@@ -12,7 +12,7 @@
     <div class="highlight-box">
         <p><strong>Récapitulatif</strong><br>
         Commande n° {{ order.id }}<br>
-        Date : {{ order.orderDate ? order.orderDate|date('d/m/Y à H:i') : 'N/A' }}<br>
+        Date : {{ order.orderDate ? order.orderDate|date('d/m/Y à H:i', false) : 'N/A' }}<br>
         Livraison : {{ order.deliveryDate ? order.deliveryDate|date('d/m/Y') : 'N/A' }} à {{ order.deliveryTime ? order.deliveryTime|date('H:i') : 'N/A' }}<br>
         Adresse : {{ order.deliveryAddress }}<br>
         Montant total : {{ order.totalAmount|number_format(2, ',', ' ') }} €<br>

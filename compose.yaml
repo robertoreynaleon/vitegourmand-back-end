@@ -56,8 +56,23 @@ services:
       retries: 20
       start_period: 30s
 
+  phpmyadmin:
+    image: phpmyadmin:5.2-apache
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 64M
+    ports:
+      - "127.0.0.1:${VG_PHPMYADMIN_PORT:-8090}:80"
+    depends_on:
+      database:
+        condition: service_healthy
+
   mongodb:
     image: mongo:6.0
+    ports:
+      # Le port 27018 évite le port MongoDB standard déjà occupé sur la machine.
+      - "127.0.0.1:${VG_MONGODB_PORT:-27018}:27017"
     volumes:
       - mongodb_data:/data/db
     healthcheck:

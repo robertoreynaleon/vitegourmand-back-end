@@ -12,7 +12,7 @@
     <div class="highlight-box">
         <p><strong>Récapitulatif</strong><br>
         Commande n° {{ order.id }}<br>
-        Date de commande : {{ order.orderDate ? order.orderDate|date('d/m/Y à H:i') : 'N/A' }}<br>
+        Date de commande : {{ order.orderDate ? order.orderDate|date('d/m/Y à H:i', false) : 'N/A' }}<br>
         Montant total : {{ order.totalAmount|number_format(2, ',', ' ') }} €<br>
         Statut : Annulée</p>
     </div>
